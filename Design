@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RennXAI — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary:#1E5BA8; --primary-dark:#163F78; --primary-light:#2A72CC;
+  --action:#0A93F6; --action-glow:rgba(10,147,246,0.35); --action-subtle:rgba(10,147,246,0.10);
+  --white:#FFFFFF; --surface-1:#F4F7FB; --surface-2:#E8EFF8; --surface-3:#D0DFEF;
+  --border:rgba(30,91,168,0.15); --border-strong:rgba(30,91,168,0.30);
+  --text-primary:#0D1B2E; --text-secondary:#3D5470; --text-muted:#7A90AA;
+  --success:#12B76A; --warning:#F79009; --error:#F04438;
+  --glass-bg:rgba(255,255,255,0.12); --glass-bg2:rgba(255,255,255,0.08);
+  --glass-border:rgba(255,255,255,0.22); --glass-shadow:0 8px 32px rgba(10,30,60,0.20);
+  --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:28px; --r-full:9999px;
+  --shadow-sm:0 1px 3px rgba(13,27,46,0.08),0 1px 2px rgba(13,27,46,0.06);
+  --shadow-md:0 4px 16px rgba(13,27,46,0.10),0 2px 6px rgba(13,27,46,0.06);
+  --shadow-lg:0 12px 40px rgba(13,27,46,0.14),0 4px 12px rgba(13,27,46,0.08);
+  --shadow-xl:0 24px 64px rgba(13,27,46,0.18),0 8px 24px rgba(13,27,46,0.10);
+  --shadow-action:0 4px 24px rgba(10,147,246,0.40);
+  --shadow-primary:0 4px 24px rgba(30,91,168,0.35);
+  --font-display:'Montserrat',sans-serif; --font-body:'Inter',sans-serif;
+  --ease-out:cubic-bezier(0.16,1,0.3,1); --t-fast:150ms; --t-base:250ms; --t-slow:400ms;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--surface-1);color:var(--text-primary);line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+/* MESH BG */
+.mesh-bg{position:relative;overflow:hidden;}
+.mesh-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 20%,rgba(10,147,246,0.18) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 70%,rgba(30,91,168,0.22) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 55% 40%,rgba(10,147,246,0.10) 0%,transparent 50%),linear-gradient(160deg,#0D1B2E 0%,#163F78 45%,#0A3060 100%);z-index:0;animation:meshShift 12s ease-in-out infinite alternate;}
+@keyframes meshShift{0%{filter:hue-rotate(0deg) brightness(1);}100%{filter:hue-rotate(8deg) brightness(1.06);}}
+.mesh-bg>*{position:relative;z-index:1;}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.35;animation:orbFloat 8s ease-in-out infinite;pointer-events:none;z-index:0;}
+.orb-1{width:400px;height:400px;background:var(--action);top:-80px;right:-60px;}
+.orb-2{width:300px;height:300px;background:var(--primary);bottom:-40px;left:10%;animation-delay:-3s;}
+.orb-3{width:200px;height:200px;background:rgba(10,147,246,0.8);top:40%;left:40%;animation-delay:-6s;}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(20px,-30px) scale(1.05);}66%{transform:translate(-15px,20px) scale(0.95);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(.8);}}
+
+/* PAGE */
+.ds-page{max-width:1200px;margin:0 auto;padding:0 40px 80px;}
+
+/* HERO */
+.ds-hero{min-height:360px;display:flex;align-items:flex-end;padding:80px 40px 56px;}
+.ds-hero-inner{max-width:1200px;margin:0 auto;width:100%;}
+.ds-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:20px;}
+.ds-label-dot{width:6px;height:6px;border-radius:50%;background:var(--action);box-shadow:0 0 8px var(--action);animation:pulse 2s ease infinite;}
+.ds-hero-title{font-family:var(--font-display);font-size:clamp(44px,6vw,80px);font-weight:900;color:#fff;line-height:1;letter-spacing:-2px;margin-bottom:20px;}
+.ds-hero-title em{font-style:normal;background:linear-gradient(120deg,var(--action),#72D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ds-hero-meta{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+.ds-hero-meta span{font-size:13px;color:rgba(255,255,255,0.50);display:flex;align-items:center;gap:8px;}
+.ds-hero-meta span::before{content:'—';color:var(--action);}
+
+/* SECTION */
+.ds-section{margin-bottom:80px;}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:36px;border-bottom:1px solid var(--border);padding-bottom:16px;}
+.section-num{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:3px;color:var(--action);text-transform:uppercase;min-width:32px;}
+.section-title{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text-primary);letter-spacing:-.5px;}
+.section-desc{font-size:14px;color:var(--text-muted);margin-left:auto;}
+
+/* COLORS */
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:16px;}
+.color-swatch{border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-md);transition:transform var(--t-base) var(--ease-out),box-shadow var(--t-base);cursor:default;}
+.color-swatch:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+.swatch-color{height:90px;display:flex;align-items:flex-end;padding:10px 14px;}
+.swatch-hex{font-size:10px;font-weight:600;letter-spacing:1px;opacity:.75;text-transform:uppercase;}
+.swatch-info{background:white;padding:12px 14px;}
+.swatch-name{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:2px;}
+.swatch-role{font-size:11px;color:var(--text-muted);}
+.semantic-row{display:flex;gap:12px;flex-wrap:wrap;}
+.sem-chip{display:flex;align-items:center;gap:10px;background:white;border-radius:var(--r-md);padding:12px 18px;box-shadow:var(--shadow-sm);flex:1;min-width:120px;}
+.sem-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;}
+.sem-label{font-size:12px;font-weight:600;color:var(--text-primary);}
+.sem-val{font-size:10px;color:var(--text-muted);font-family:monospace;}
+
+/* TYPOGRAPHY */
+.type-showcase{background:white;border-radius:var(--r-xl);padding:48px;box-shadow:var(--shadow-md);}
+.type-row{display:flex;align-items:baseline;gap:24px;padding:20px 0;border-bottom:1px solid var(--surface-2);}
+.type-row:last-child{border-bottom:none;}
+.type-meta{min-width:170px;flex-shrink:0;}
+.type-tag{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--action);margin-bottom:4px;}
+.type-spec{font-size:11px;color:var(--text-muted);font-family:monospace;line-height:1.7;}
+.type-sample{flex:1;}
+
+/* GLASS */
+.glass-demo{border-radius:var(--r-xl);padding:56px 48px;min-height:280px;display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;}
+.glass-card{backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--r-xl);box-shadow:var(--glass-shadow);color:white;transition:transform var(--t-base) var(--ease-out),box-shadow var(--t-base);}
+.glass-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(10,30,60,0.30);}
+.gc-sm{padding:20px 24px;width:190px;} .gc-md{padding:28px 32px;width:240px;} .gc-lg{padding:32px 36px;flex:1;min-width:240px;}
+.gc-icon{font-size:26px;margin-bottom:12px;display:block;}
+.gc-title{font-family:var(--font-display);font-size:15px;font-weight:700;color:white;margin-bottom:6px;}
+.gc-body{font-size:12px;color:rgba(255,255,255,0.65);line-height:1.6;}
+.gc-stat-num{font-family:var(--font-display);font-size:34px;font-weight:900;background:linear-gradient(120deg,#fff,rgba(255,255,255,0.75));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px;line-height:1;margin-bottom:4px;}
+.gc-stat-label{font-size:10px;color:rgba(255,255,255,0.55);letter-spacing:1px;text-transform:uppercase;}
+.gc-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(10,147,246,0.25);border:1px solid rgba(10,147,246,0.4);border-radius:var(--r-full);padding:4px 12px;font-size:10px;font-weight:600;color:#72D4FF;margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;}
+.gc-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--action);box-shadow:0 0 6px var(--action);animation:pulse 2s infinite;}
+
+/* BUTTONS */
+.button-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:20px;}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:600;font-size:14px;border:none;cursor:pointer;transition:all var(--t-base) var(--ease-out);text-decoration:none;letter-spacing:.2px;position:relative;overflow:hidden;}
+.btn-sm{padding:8px 18px;border-radius:var(--r-full);font-size:12px;}
+.btn-md{padding:12px 28px;border-radius:var(--r-full);}
+.btn-lg{padding:16px 36px;border-radius:var(--r-full);font-size:16px;}
+.btn-primary{background:var(--primary);color:white;box-shadow:var(--shadow-primary);}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px);box-shadow:0 8px 32px rgba(30,91,168,0.45);}
+.btn-action{background:var(--action);color:white;box-shadow:var(--shadow-action);}
+.btn-action:hover{background:#0082DC;transform:translateY(-2px);box-shadow:0 8px 32px rgba(10,147,246,0.55);}
+.btn-gradient{background:linear-gradient(135deg,var(--primary) 0%,var(--action) 100%);color:white;box-shadow:0 4px 24px rgba(10,80,180,0.35);}
+.btn-gradient:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(10,80,180,0.50);filter:brightness(1.05);}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--border-strong);}
+.btn-outline:hover{background:var(--action-subtle);border-color:var(--action);color:var(--action);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--text-secondary);}
+.btn-ghost:hover{background:var(--surface-2);color:var(--text-primary);}
+.btn-glass{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;box-shadow:var(--glass-shadow);}
+.btn-glass:hover{background:rgba(255,255,255,0.22);transform:translateY(-2px);}
+.btn-danger{background:var(--error);color:white;box-shadow:0 4px 20px rgba(240,68,56,0.35);}
+.btn-danger:hover{transform:translateY(-2px);filter:brightness(1.1);}
+.btn-disabled{background:var(--surface-3);color:var(--text-muted);cursor:not-allowed;pointer-events:none;}
+
+/* INPUTS */
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;background:white;border-radius:var(--r-xl);padding:40px;box-shadow:var(--shadow-md);}
+.field{display:flex;flex-direction:column;gap:8px;}
+.field-label{font-size:12px;font-weight:600;color:var(--text-secondary);letter-spacing:.3px;}
+.field-input{font-family:var(--font-body);font-size:14px;padding:12px 16px;border:1.5px solid var(--surface-3);border-radius:var(--r-md);color:var(--text-primary);background:var(--surface-1);transition:border-color var(--t-fast),box-shadow var(--t-fast),background var(--t-fast);outline:none;width:100%;}
+.field-input:focus{border-color:var(--action);background:white;box-shadow:0 0 0 3px rgba(10,147,246,0.12);}
+.field-input.success{border-color:var(--success);}
+.field-input.error{border-color:var(--error);}
+.field-hint{font-size:11px;color:var(--text-muted);}
+.field-hint.err{color:var(--error);} .field-hint.ok{color:var(--success);}
+.field-input-wrap{position:relative;}
+.field-input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
+.field-input.has-icon{padding-left:40px;}
+
+/* BADGES */
+.badge-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r-full);font-size:11px;font-weight:600;letter-spacing:.3px;}
+.badge-dot{width:6px;height:6px;border-radius:50%;}
+.badge-primary{background:rgba(30,91,168,0.10);color:var(--primary);}
+.badge-action{background:rgba(10,147,246,0.12);color:#0079D0;}
+.badge-success{background:rgba(18,183,106,0.12);color:#0A7A4A;}
+.badge-warning{background:rgba(247,144,9,0.12);color:#B45309;}
+.badge-error{background:rgba(240,68,56,0.12);color:#B42318;}
+.badge-neutral{background:var(--surface-2);color:var(--text-secondary);}
+
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.ds-card{background:white;border-radius:var(--r-xl);padding:28px;box-shadow:var(--shadow-md);border:1px solid var(--border);transition:transform var(--t-base) var(--ease-out),box-shadow var(--t-base);position:relative;overflow:hidden;}
+.ds-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl);}
+.ds-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--action));opacity:0;transition:opacity var(--t-base);}
+.ds-card:hover::before{opacity:1;}
+.card-icon-wrap{width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;}
+.icon-blue{background:rgba(10,147,246,0.10);} .icon-primary{background:rgba(30,91,168,0.10);} .icon-success{background:rgba(18,183,106,0.10);}
+.card-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:8px;}
+.card-body{font-size:13px;color:var(--text-muted);line-height:1.6;}
+.card-footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--surface-2);display:flex;justify-content:space-between;align-items:center;}
+.card-link{font-size:12px;font-weight:600;color:var(--action);text-decoration:none;display:flex;align-items:center;gap:4px;transition:gap var(--t-fast);}
+.card-link:hover{gap:8px;}
+
+/* MOCKUP */
+.mockup-stage{border-radius:var(--r-xl);min-height:420px;padding:48px;display:flex;align-items:center;justify-content:center;position:relative;}
+.ui-window{background:white;border-radius:var(--r-xl);box-shadow:var(--shadow-xl);width:100%;max-width:580px;overflow:hidden;animation:floatWindow 6s ease-in-out infinite;}
+@keyframes floatWindow{0%,100%{transform:translateY(0px) rotate(-.5deg);}50%{transform:translateY(-12px) rotate(.5deg);}}
+.win-bar{background:var(--surface-1);padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--surface-2);}
+.win-dots{display:flex;gap:6px;}
+.win-dot{width:10px;height:10px;border-radius:50%;}
+.wd-r{background:#FF5F57;} .wd-y{background:#FEBC2E;} .wd-g{background:#28C840;}
+.win-url{flex:1;background:white;border-radius:var(--r-full);padding:5px 14px;font-size:11px;color:var(--text-muted);border:1px solid var(--surface-2);display:flex;align-items:center;gap:6px;}
+.win-url-dot{width:6px;height:6px;border-radius:50%;background:var(--success);}
+.win-body{padding:28px;}
+.win-nav{display:flex;gap:6px;margin-bottom:24px;background:var(--surface-1);border-radius:var(--r-full);padding:4px;width:fit-content;}
+.win-tab{padding:6px 18px;border-radius:var(--r-full);font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all var(--t-fast);}
+.win-tab.active{background:white;color:var(--primary);box-shadow:var(--shadow-sm);font-weight:600;}
+.win-stat-row{display:flex;gap:12px;margin-bottom:20px;}
+.win-stat{flex:1;background:var(--surface-1);border-radius:var(--r-md);padding:14px;text-align:center;}
+.ws-num{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--primary);}
+.ws-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;}
+.win-bar-chart{display:flex;gap:6px;align-items:flex-end;height:60px;margin-bottom:20px;}
+.wbc-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--action) 0%,var(--primary) 100%);opacity:.7;transition:opacity var(--t-fast);}
+.wbc-bar:hover{opacity:1;}
+.win-list{display:flex;flex-direction:column;gap:10px;}
+.win-list-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:var(--r-md);background:var(--surface-1);}
+.wli-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0;}
+.wli-name{font-size:12px;font-weight:600;color:var(--text-primary);}
+.wli-meta{font-size:10px;color:var(--text-muted);}
+.wli-badge{margin-left:auto;}
+.float-chip{position:absolute;background:white;border-radius:var(--r-full);padding:8px 16px;font-size:12px;font-weight:600;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px;color:var(--text-primary);white-space:nowrap;animation:floatChip 5s ease-in-out infinite;}
+.fc-icon{font-size:16px;}
+.float-chip:nth-child(2){animation-delay:-1.5s;}
+.float-chip:nth-child(3){animation-delay:-3s;}
+@keyframes floatChip{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.fc-1{top:30px;left:20px;} .fc-2{top:30px;right:10px;} .fc-3{bottom:30px;left:30px;}
+
+/* SPACING */
+.spacing-row{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;}
+.sp-item{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.sp-bar{background:linear-gradient(180deg,var(--action),var(--primary));border-radius:4px;width:32px;}
+.sp-label{font-size:10px;font-family:monospace;color:var(--text-muted);}
+
+/* SHADOWS */
+.shadow-row{display:flex;gap:20px;flex-wrap:wrap;}
+.sh-card{background:white;border-radius:var(--r-lg);padding:24px 28px;flex:1;min-width:130px;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.sh-label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;}
+
+/* MOTION */
+.motion-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.motion-item{background:white;border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--border);}
+.motion-bar{height:4px;background:var(--surface-2);border-radius:4px;margin-bottom:14px;overflow:hidden;}
+.motion-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--primary),var(--action));animation:motionFill 2.2s ease infinite;width:0%;}
+@keyframes motionFill{0%{width:0%;opacity:1;}80%{width:100%;opacity:1;}100%{width:100%;opacity:0;}}
+.mi-name{font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;}
+.mi-val{font-size:11px;color:var(--action);font-family:monospace;margin-bottom:2px;}
+.mi-desc{font-size:10px;color:var(--text-muted);line-height:1.5;}
+
+/* TOKENS */
+.token-section{background:white;border-radius:var(--r-xl);padding:32px;box-shadow:var(--shadow-md);}
+.token-row{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--surface-2);font-size:13px;}
+.token-row:last-child{border-bottom:none;}
+.token-name{font-family:monospace;font-size:12px;color:var(--action);min-width:210px;}
+.token-value{color:var(--text-secondary);flex:1;}
+.token-preview{width:48px;text-align:right;font-size:14px;color:var(--text-muted);}
+
+/* FOOTER */
+.ds-footer{display:flex;align-items:center;justify-content:space-between;padding:28px 40px;background:var(--text-primary);color:rgba(255,255,255,0.45);font-size:12px;}
+.ds-footer .logo{font-family:var(--font-display);font-weight:900;font-size:18px;color:white;letter-spacing:-.5px;}
+.ds-footer .logo em{font-style:normal;color:var(--action);}
+.ds-footer-right{display:flex;gap:24px;}
+
+.fade-up{opacity:0;transform:translateY(20px);animation:fadeUp 0.6s var(--ease-out) forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.d1{animation-delay:.05s} .d2{animation-delay:.10s} .d3{animation-delay:.15s}
+.d4{animation-delay:.20s} .d5{animation-delay:.25s} .d6{animation-delay:.30s}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="mesh-bg ds-hero">
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+  <div class="ds-hero-inner">
+    <div class="ds-label"><span class="ds-label-dot"></span> Design System — v1.0</div>
+    <h1 class="ds-hero-title">Renn<em>X</em>AI<br>Design System</h1>
+    <div class="ds-hero-meta">
+      <span>Primary #1E5BA8</span>
+      <span>Action #0A93F6</span>
+      <span>Montserrat + Inter</span>
+      <span>Glassmorphism UI</span>
+    </div>
+  </div>
+</div>
+
+<div class="ds-page">
+
+<!-- 01 COLORS -->
+<div class="ds-section fade-up d1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Color Palette</h2>
+    <span class="section-desc">Semantic HSL system</span>
+  </div>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="swatch-color" style="background:#1E5BA8;"><span class="swatch-hex" style="color:rgba(255,255,255,0.7)">#1E5BA8</span></div>
+      <div class="swatch-info"><div class="swatch-name">Primary Blue</div><div class="swatch-role">Brand anchor</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-color" style="background:#163F78;"><span class="swatch-hex" style="color:rgba(255,255,255,0.7)">#163F78</span></div>
+      <div class="swatch-info"><div class="swatch-name">Primary Dark</div><div class="swatch-role">Hover / pressed</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-color" style="background:#2A72CC;"><span class="swatch-hex" style="color:rgba(255,255,255,0.75)">#2A72CC</span></div>
+      <div class="swatch-info"><div class="swatch-name">Primary Light</div><div class="swatch-role">Highlights</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-color" style="background:#0A93F6;"><span class="swatch-hex" style="color:rgba(255,255,255,0.8)">#0A93F6</span></div>
+      <div class="swatch-info"><div class="swatch-name">Action Blue</div><div class="swatch-role">CTAs, links, focus</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-color" style="background:#0D1B2E;"><span class="swatch-hex" style="color:rgba(255,255,255,0.55)">#0D1B2E</span></div>
+      <div class="swatch-info"><div class="swatch-name">Text Primary</div><div class="swatch-role">Headlines, body</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-color" style="background:#3D5470;"><span class="swatch-hex" style="color:rgba(255,255,255,0.7)">#3D5470</span></div>
+      <div class="swatch-info"><div class="swatch-name">Text Secondary</div><div class="swatch-role">Supporting copy</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-color" style="background:#7A90AA;"><span class="swatch-hex" style="color:rgba(255,255,255,0.85)">#7A90AA</span></div>
+      <div class="swatch-info"><div class="swatch-name">Text Muted</div><div class="swatch-role">Labels, hints</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="swatch-color" style="background:#F4F7FB;border-bottom:1px solid #E8EFF8;"><span class="swatch-hex" style="color:#7A90AA">#F4F7FB</span></div>
+      <div class="swatch-info"><div class="swatch-name">Surface 1</div><div class="swatch-role">Page background</div></div>
+    </div>
+  </div>
+  <div class="semantic-row" style="margin-top:20px;">
+    <div class="sem-chip"><div class="sem-dot" style="background:#12B76A;"></div><div><div class="sem-label">Success</div><div class="sem-val">#12B76A</div></div></div>
+    <div class="sem-chip"><div class="sem-dot" style="background:#F79009;"></div><div><div class="sem-label">Warning</div><div class="sem-val">#F79009</div></div></div>
+    <div class="sem-chip"><div class="sem-dot" style="background:#F04438;"></div><div><div class="sem-label">Error</div><div class="sem-val">#F04438</div></div></div>
+    <div class="sem-chip"><div class="sem-dot" style="background:#0A93F6;"></div><div><div class="sem-label">Info</div><div class="sem-val">#0A93F6</div></div></div>
+  </div>
+</div>
+
+<!-- 02 TYPOGRAPHY -->
+<div class="ds-section fade-up d2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Typography</h2>
+    <span class="section-desc">Montserrat (display) · Inter (body)</span>
+  </div>
+  <div class="type-showcase">
+    <div class="type-row">
+      <div class="type-meta"><div class="type-tag">Display</div><div class="type-spec">Montserrat 900<br>72px / –2px</div></div>
+      <div class="type-sample" style="font-family:'Montserrat',sans-serif;font-size:56px;font-weight:900;letter-spacing:-2px;line-height:1;color:#0D1B2E;">Headline</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-tag">H1</div><div class="type-spec">Montserrat 800<br>48px / –1.5px</div></div>
+      <div class="type-sample" style="font-family:'Montserrat',sans-serif;font-size:38px;font-weight:800;letter-spacing:-1.5px;color:#0D1B2E;">Page Title</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-tag">H2</div><div class="type-spec">Montserrat 700<br>32px / –1px</div></div>
+      <div class="type-sample" style="font-family:'Montserrat',sans-serif;font-size:28px;font-weight:700;letter-spacing:-1px;color:#0D1B2E;">Section Title</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-tag">H3</div><div class="type-spec">Montserrat 600<br>20px / –0.5px</div></div>
+      <div class="type-sample" style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:600;letter-spacing:-0.5px;color:#0D1B2E;">Card Heading</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-tag">Body LG</div><div class="type-spec">Inter 400<br>16px / 1.7</div></div>
+      <div class="type-sample" style="font-size:16px;font-weight:400;line-height:1.7;color:#3D5470;">The quick brown fox jumps over the lazy dog. Readable, clean body text for all content.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-tag">Body SM</div><div class="type-spec">Inter 400<br>14px / 1.6</div></div>
+      <div class="type-sample" style="font-size:14px;line-height:1.6;color:#3D5470;">Secondary information, descriptions, and supporting content in standard weight.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-tag">Caption</div><div class="type-spec">Inter 500<br>11px / +1.5px</div></div>
+      <div class="type-sample" style="font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:#7A90AA;">LABEL · METADATA · TIMESTAMP</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 GLASS -->
+<div class="ds-section fade-up d3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Glassmorphism</h2>
+    <span class="section-desc">backdrop-filter blur · translucent surfaces</span>
+  </div>
+  <div class="glass-demo mesh-bg">
+    <div class="orb" style="width:300px;height:300px;background:#0A93F6;top:-50px;left:10%;opacity:.3;animation-delay:-2s;"></div>
+    <div class="orb" style="width:250px;height:250px;background:#1E5BA8;bottom:-30px;right:5%;opacity:.35;"></div>
+    <div class="glass-card gc-sm">
+      <span class="gc-icon">🧠</span>
+      <div class="gc-title">CRM Active</div>
+      <div class="gc-body">All pipelines running smoothly</div>
+    </div>
+    <div class="glass-card gc-md">
+      <div class="gc-badge"><span class="gc-badge-dot"></span>Live</div>
+      <div class="gc-stat-num">94%</div>
+      <div class="gc-stat-label">Lead conversion</div>
+      <div class="gc-body" style="margin-top:10px;">Up 12% from last month. AI follow-ups active.</div>
+    </div>
+    <div class="glass-card gc-lg">
+      <div class="gc-title" style="font-size:17px;margin-bottom:16px;">System Overview</div>
+      <div style="display:flex;gap:20px;">
+        <div><div class="gc-stat-num" style="font-size:28px;">142</div><div class="gc-stat-label">Clients</div></div>
+        <div><div class="gc-stat-num" style="font-size:28px;">38</div><div class="gc-stat-label">Caregivers</div></div>
+        <div><div class="gc-stat-num" style="font-size:28px;">$0</div><div class="gc-stat-label">Lost Leads</div></div>
+      </div>
+      <div style="margin-top:16px;height:3px;background:rgba(255,255,255,0.15);border-radius:3px;">
+        <div style="width:78%;height:100%;background:linear-gradient(90deg,var(--action),#72D4FF);border-radius:3px;"></div>
+      </div>
+      <div class="gc-body" style="margin-top:8px;">Monthly target — 78% achieved</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 BUTTONS -->
+<div class="ds-section fade-up d4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Button System</h2>
+    <span class="section-desc">8 variants · 3 sizes · hover states</span>
+  </div>
+  <div style="background:white;border-radius:var(--r-xl);padding:40px;box-shadow:var(--shadow-md);">
+    <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;">Variants</div>
+    <div class="button-row">
+      <button class="btn btn-md btn-primary">Primary</button>
+      <button class="btn btn-md btn-action">Action</button>
+      <button class="btn btn-md btn-gradient">Gradient</button>
+      <button class="btn btn-md btn-outline">Outline</button>
+      <button class="btn btn-md btn-ghost">Ghost</button>
+      <button class="btn btn-md btn-danger">Danger</button>
+      <button class="btn btn-md btn-disabled">Disabled</button>
+    </div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin:24px 0 16px;">Sizes</div>
+    <div class="button-row">
+      <button class="btn btn-sm btn-action">Small</button>
+      <button class="btn btn-md btn-action">Medium</button>
+      <button class="btn btn-lg btn-action">Large</button>
+    </div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin:24px 0 16px;">With Icons</div>
+    <div class="button-row">
+      <button class="btn btn-md btn-primary">🚀 Get Started</button>
+      <button class="btn btn-md btn-action">⚡ Automate Now</button>
+      <button class="btn btn-md btn-outline">📅 Book Demo</button>
+    </div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin:24px 0 16px;">Glass (on dark bg)</div>
+    <div style="background:linear-gradient(135deg,#0D1B2E,#163F78);border-radius:var(--r-lg);padding:24px;display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-md btn-glass">🤖 AI Dashboard</button>
+      <button class="btn btn-md btn-glass">📊 View Reports</button>
+      <button class="btn btn-md btn-action">✦ Upgrade</button>
+    </div>
+  </div>
+</div>
+
+<!-- 05 INPUTS -->
+<div class="ds-section fade-up d5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Form Inputs</h2>
+    <span class="section-desc">Default · Focus · Success · Error states</span>
+  </div>
+  <div class="input-grid">
+    <div class="field">
+      <label class="field-label">Agency Name</label>
+      <input class="field-input" type="text" placeholder="Sunrise Home Care">
+    </div>
+    <div class="field">
+      <label class="field-label">Contact Email</label>
+      <div class="field-input-wrap">
+        <span class="field-input-icon">✉️</span>
+        <input class="field-input has-icon" type="email" placeholder="hello@agency.com">
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Status — Focused</label>
+      <input class="field-input" type="text" value="Active" style="border-color:var(--action);background:white;box-shadow:0 0 0 3px rgba(10,147,246,0.12);">
+      <span class="field-hint">Auto-saved to CRM</span>
+    </div>
+    <div class="field">
+      <label class="field-label">Phone — Success</label>
+      <input class="field-input success" type="text" value="+1 (949) 555-0192">
+      <span class="field-hint ok">✓ Verified number</span>
+    </div>
+    <div class="field">
+      <label class="field-label">License — Error</label>
+      <input class="field-input error" type="text" value="HC-00">
+      <span class="field-hint err">⚠ Invalid license format</span>
+    </div>
+    <div class="field">
+      <label class="field-label">Select Service</label>
+      <select class="field-input" style="cursor:pointer;">
+        <option>Personal Care</option>
+        <option>Companion Care</option>
+        <option>Skilled Nursing</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- 06 BADGES -->
+<div class="ds-section fade-up d6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Badges & Tags</h2>
+    <span class="section-desc">Status indicators · semantic chips</span>
+  </div>
+  <div style="background:white;border-radius:var(--r-xl);padding:32px;box-shadow:var(--shadow-md);">
+    <div class="badge-row">
+      <span class="badge badge-primary"><span class="badge-dot" style="background:#1E5BA8;"></span>Primary</span>
+      <span class="badge badge-action"><span class="badge-dot" style="background:#0A93F6;"></span>Action</span>
+      <span class="badge badge-success"><span class="badge-dot" style="background:#12B76A;"></span>Active</span>
+      <span class="badge badge-warning"><span class="badge-dot" style="background:#F79009;"></span>Pending</span>
+      <span class="badge badge-error"><span class="badge-dot" style="background:#F04438;"></span>Overdue</span>
+      <span class="badge badge-neutral">Inactive</span>
+      <span class="badge badge-action">🤖 AI Running</span>
+      <span class="badge badge-success">✅ Verified</span>
+      <span class="badge badge-warning">⏳ In Progress</span>
+    </div>
+  </div>
+</div>
+
+<!-- 07 CARDS -->
+<div class="ds-section">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title">Card Components</h2>
+    <span class="section-desc">Hover lift · gradient top accent on hover</span>
+  </div>
+  <div class="card-grid">
+    <div class="ds-card">
+      <div class="card-icon-wrap icon-blue">🤖</div>
+      <div class="card-title">AI Chat Widget</div>
+      <div class="card-body">24/7 lead capture running on your website. Qualifies visitors and books consultations automatically.</div>
+      <div class="card-footer">
+        <span class="badge badge-success"><span class="badge-dot" style="background:#12B76A;"></span>Live</span>
+        <a class="card-link" href="#">View →</a>
+      </div>
+    </div>
+    <div class="ds-card">
+      <div class="card-icon-wrap icon-primary">📋</div>
+      <div class="card-title">CRM Pipeline</div>
+      <div class="card-body">All client records, family communication, and care notes in a single organized dashboard.</div>
+      <div class="card-footer">
+        <span class="badge badge-action">142 records</span>
+        <a class="card-link" href="#">Open →</a>
+      </div>
+    </div>
+    <div class="ds-card">
+      <div class="card-icon-wrap icon-success">⚙️</div>
+      <div class="card-title">Admin Automation</div>
+      <div class="card-body">Document requests, intake forms, and reminders sent without a single manual action from your team.</div>
+      <div class="card-footer">
+        <span class="badge badge-warning">3 pending</span>
+        <a class="card-link" href="#">Manage →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 08 MOCKUP -->
+<div class="ds-section">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2 class="section-title">Floating UI Mockup</h2>
+    <span class="section-desc">Animated window · orbit chips · mesh bg</span>
+  </div>
+  <div class="mockup-stage mesh-bg">
+    <div class="orb" style="width:350px;height:350px;background:#0A93F6;top:-100px;right:-60px;opacity:.25;"></div>
+    <div class="orb" style="width:250px;height:250px;background:#163F78;bottom:-60px;left:-40px;opacity:.3;animation-delay:-4s;"></div>
+    <div class="float-chip fc-1"><span class="fc-icon">✅</span>New client booked</div>
+    <div class="float-chip fc-2"><span class="fc-icon">🤖</span>AI handled it</div>
+    <div class="float-chip fc-3"><span class="fc-icon">📅</span>Interview scheduled</div>
+    <div class="ui-window">
+      <div class="win-bar">
+        <div class="win-dots"><div class="win-dot wd-r"></div><div class="win-dot wd-y"></div><div class="win-dot wd-g"></div></div>
+        <div class="win-url"><span class="win-url-dot"></span>app.rennxai.com/dashboard</div>
+      </div>
+      <div class="win-body">
+        <div class="win-nav">
+          <div class="win-tab active">Overview</div>
+          <div class="win-tab">Clients</div>
+          <div class="win-tab">Caregivers</div>
+        </div>
+        <div class="win-stat-row">
+          <div class="win-stat"><div class="ws-num">142</div><div class="ws-lbl">Clients</div></div>
+          <div class="win-stat"><div class="ws-num">38</div><div class="ws-lbl">Caregivers</div></div>
+          <div class="win-stat"><div class="ws-num">94%</div><div class="ws-lbl">Conversion</div></div>
+          <div class="win-stat"><div class="ws-num">$0</div><div class="ws-lbl">Lost Leads</div></div>
+        </div>
+        <div class="win-bar-chart">
+          <div class="wbc-bar" style="height:30%"></div><div class="wbc-bar" style="height:55%"></div>
+          <div class="wbc-bar" style="height:40%"></div><div class="wbc-bar" style="height:70%"></div>
+          <div class="wbc-bar" style="height:60%"></div><div class="wbc-bar" style="height:85%"></div>
+          <div class="wbc-bar" style="height:75%;opacity:1;"></div>
+        </div>
+        <div class="win-list">
+          <div class="win-list-item">
+            <div class="wli-avatar" style="background:#1E5BA8;">MJ</div>
+            <div><div class="wli-name">Maria Johnson</div><div class="wli-meta">Intake complete · Today 9:42am</div></div>
+            <div class="wli-badge"><span class="badge badge-success" style="font-size:10px;">Active</span></div>
+          </div>
+          <div class="win-list-item">
+            <div class="wli-avatar" style="background:#0A93F6;">RT</div>
+            <div><div class="wli-name">Robert Torres</div><div class="wli-meta">Assessment booked · Tomorrow</div></div>
+            <div class="wli-badge"><span class="badge badge-warning" style="font-size:10px;">Pending</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 SPACING -->
+<div class="ds-section">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2 class="section-title">Spacing Scale</h2>
+    <span class="section-desc">4px base unit</span>
+  </div>
+  <div style="background:white;border-radius:var(--r-xl);padding:40px;box-shadow:var(--shadow-md);">
+    <div class="spacing-row">
+      <div class="sp-item"><div class="sp-bar" style="height:2px;"></div><div class="sp-label">2</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:4px;"></div><div class="sp-label">4</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:6px;"></div><div class="sp-label">6</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:8px;"></div><div class="sp-label">8</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:12px;"></div><div class="sp-label">12</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:16px;"></div><div class="sp-label">16</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:20px;"></div><div class="sp-label">20</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:24px;"></div><div class="sp-label">24</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:32px;"></div><div class="sp-label">32</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:40px;"></div><div class="sp-label">40</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:48px;"></div><div class="sp-label">48</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:64px;"></div><div class="sp-label">64</div></div>
+      <div class="sp-item"><div class="sp-bar" style="height:80px;"></div><div class="sp-label">80</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 SHADOWS -->
+<div class="ds-section">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2 class="section-title">Shadow Scale</h2>
+    <span class="section-desc">5 elevation levels + 2 brand shadows</span>
+  </div>
+  <div class="shadow-row">
+    <div class="sh-card" style="box-shadow:var(--shadow-sm);"><div class="sh-label">sm</div></div>
+    <div class="sh-card" style="box-shadow:var(--shadow-md);"><div class="sh-label">md</div></div>
+    <div class="sh-card" style="box-shadow:var(--shadow-lg);"><div class="sh-label">lg</div></div>
+    <div class="sh-card" style="box-shadow:var(--shadow-xl);"><div class="sh-label">xl</div></div>
+    <div class="sh-card" style="box-shadow:var(--shadow-action);border-top:2px solid var(--action);"><div class="sh-label" style="color:var(--action);">action</div></div>
+    <div class="sh-card" style="box-shadow:var(--shadow-primary);border-top:2px solid var(--primary);"><div class="sh-label" style="color:var(--primary);">primary</div></div>
+  </div>
+</div>
+
+<!-- 11 MOTION -->
+<div class="ds-section">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2 class="section-title">Motion Tokens</h2>
+    <span class="section-desc">Easing curves · duration scale</span>
+  </div>
+  <div class="motion-grid">
+    <div class="motion-item">
+      <div class="motion-bar"><div class="motion-fill" style="animation-timing-function:cubic-bezier(0.16,1,0.3,1);animation-duration:1.8s;"></div></div>
+      <div class="mi-name">ease-out</div><div class="mi-val">cubic-bezier(0.16,1,0.3,1)</div><div class="mi-desc">Entrances, reveals, page loads</div>
+    </div>
+    <div class="motion-item">
+      <div class="motion-bar"><div class="motion-fill" style="animation-timing-function:cubic-bezier(0.7,0,0.84,0);animation-duration:1.8s;animation-delay:-.6s;"></div></div>
+      <div class="mi-name">ease-in</div><div class="mi-val">cubic-bezier(0.7,0,0.84,0)</div><div class="mi-desc">Exits, dismissals</div>
+    </div>
+    <div class="motion-item">
+      <div class="motion-bar"><div class="motion-fill" style="animation-timing-function:linear;animation-duration:1s;animation-delay:-.3s;"></div></div>
+      <div class="mi-name">linear</div><div class="mi-val">linear</div><div class="mi-desc">Progress bars, loaders</div>
+    </div>
+    <div class="motion-item">
+      <div class="motion-bar"><div class="motion-fill" style="animation-timing-function:cubic-bezier(0.34,1.56,0.64,1);animation-duration:2.2s;animation-delay:-1s;"></div></div>
+      <div class="mi-name">spring</div><div class="mi-val">cubic-bezier(0.34,1.56,0.64,1)</div><div class="mi-desc">Buttons, tooltips, popups</div>
+    </div>
+  </div>
+  <div style="background:white;border-radius:var(--r-xl);padding:28px;box-shadow:var(--shadow-md);margin-top:16px;display:flex;gap:40px;flex-wrap:wrap;">
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;margin-bottom:12px;">Duration Scale</div>
+      <div style="display:flex;gap:24px;">
+        <div style="text-align:center;"><div style="font-size:22px;font-family:'Montserrat',sans-serif;font-weight:800;color:var(--action);">150ms</div><div style="font-size:10px;color:var(--text-muted);">Fast · hover</div></div>
+        <div style="text-align:center;"><div style="font-size:22px;font-family:'Montserrat',sans-serif;font-weight:800;color:var(--primary);">250ms</div><div style="font-size:10px;color:var(--text-muted);">Base · transitions</div></div>
+        <div style="text-align:center;"><div style="font-size:22px;font-family:'Montserrat',sans-serif;font-weight:800;color:#3D5470;">400ms</div><div style="font-size:10px;color:var(--text-muted);">Slow · page reveals</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 TOKENS -->
+<div class="ds-section">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2 class="section-title">CSS Design Tokens</h2>
+    <span class="section-desc">Full variable reference</span>
+  </div>
+  <div class="token-section">
+    <div class="token-row"><span class="token-name">--primary</span><span class="token-value">#1E5BA8</span><span class="token-preview" style="color:#1E5BA8;font-size:18px;">■</span></div>
+    <div class="token-row"><span class="token-name">--primary-dark</span><span class="token-value">#163F78</span><span class="token-preview" style="color:#163F78;font-size:18px;">■</span></div>
+    <div class="token-row"><span class="token-name">--action</span><span class="token-value">#0A93F6</span><span class="token-preview" style="color:#0A93F6;font-size:18px;">■</span></div>
+    <div class="token-row"><span class="token-name">--action-glow</span><span class="token-value">rgba(10, 147, 246, 0.35)</span><span class="token-preview">◌</span></div>
+    <div class="token-row"><span class="token-name">--glass-bg</span><span class="token-value">rgba(255, 255, 255, 0.12)</span><span class="token-preview">◌</span></div>
+    <div class="token-row"><span class="token-name">--glass-border</span><span class="token-value">rgba(255, 255, 255, 0.22)</span><span class="token-preview">◌</span></div>
+    <div class="token-row"><span class="token-name">--font-display</span><span class="token-value">'Montserrat', sans-serif</span><span class="token-preview" style="font-family:'Montserrat';font-weight:800;">Aa</span></div>
+    <div class="token-row"><span class="token-name">--font-body</span><span class="token-value">'Inter', sans-serif</span><span class="token-preview">Aa</span></div>
+    <div class="token-row"><span class="token-name">--r-sm / md / lg / xl</span><span class="token-value">6px · 12px · 20px · 28px</span><span class="token-preview">◌</span></div>
+    <div class="token-row"><span class="token-name">--shadow-action</span><span class="token-value">0 4px 24px rgba(10,147,246,0.40)</span><span class="token-preview">◌</span></div>
+    <div class="token-row"><span class="token-name">--ease-out</span><span class="token-value">cubic-bezier(0.16, 1, 0.3, 1)</span><span class="token-preview">∿</span></div>
+    <div class="token-row"><span class="token-name">--t-fast / base / slow</span><span class="token-value">150ms · 250ms · 400ms</span><span class="token-preview">◌</span></div>
+  </div>
+</div>
+
+</div><!-- /ds-page -->
+
+<div class="ds-footer">
+  <div class="logo">Renn<em>X</em>AI</div>
+  <div class="ds-footer-right">
+    <span>Design System v1.0</span>
+    <span>Montserrat · Inter</span>
+    <span>#1E5BA8 · #0A93F6</span>
+  </div>
+</div>
+
+</body>
+</html>
