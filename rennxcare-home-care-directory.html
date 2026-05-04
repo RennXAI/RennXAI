@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RennXCare Home Care Directory | Find Care & Caregiver Jobs in California</title>
+  <meta name="description" content="Find trusted home care agencies in California cities, compare services and ratings, request care, and apply for caregiver jobs. Powered by RennXCare RX-Care engine." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "RennXCare Home Care Agencies Directory",
+    "url": "https://rennxcare.com/home-care-agencies",
+    "itemListElement": []
+  }
+  </script>
+  <style>
+    :root{--primary:#4987BA;--light:#90BEE0;--bg:#FAF8F4;--white:#fff;--text:#1F2937;--muted:#6B7280;--line:#E5E7EB}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1140px;margin:auto;padding:0 20px}.section{padding:56px 0}
+    h1,h2,h3{line-height:1.2;margin:0 0 12px}.hero{background:#fff;padding:72px 0}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:600;border:1px solid transparent}
+    .btn.primary{background:var(--primary);color:#fff}.btn.alt{background:#fff;color:var(--primary);border-color:var(--primary)}
+    .grid{display:grid;gap:16px}.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#EAF3FA;color:var(--primary);font-size:12px;font-weight:600}
+    .muted{color:var(--muted)} .bar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+    input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:12px} .cta{background:#EAF3FA;border-radius:16px;padding:20px}
+    .small{font-size:14px} .kicker{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary)}
+    footer{background:#fff;border-top:1px solid var(--line);padding:24px 0}
+    @media (max-width:760px){.two{grid-template-columns:1fr}.hero{padding:48px 0}}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <p class="kicker">/home-care-agencies</p>
+        <h1>Find Trusted Home Care Agencies Near You</h1>
+        <p class="muted">Compare agencies, read reviews, and connect with caregivers in your area.</p>
+        <div class="bar">
+          <a class="btn primary" href="#client-form">Find Care</a>
+          <a class="btn alt" href="#caregiver-form">Apply as Caregiver</a>
+        </div>
+        <div class="bar small"><span class="pill">Verified Agencies</span><span class="pill">Background-checked caregivers</span><span class="pill">Serving California families</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>Directory Search & Filters</h2>
+        <div class="two">
+          <input placeholder="Search by city (e.g., Los Angeles)">
+          <select><option>Service type</option><option>Dementia care</option><option>24-hour care</option><option>Companion care</option></select>
+        </div>
+        <div class="bar">
+          <select><option>Rating</option><option>4.5+ Stars</option><option>4.0+ Stars</option></select>
+          <select><option>Services</option><option>Dementia</option><option>24-Hour</option><option>Hospice Support</option></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>Featured Cities</h2>
+        <div class="grid g3">
+          <a class="card" href="#city-los-angeles"><h3>Los Angeles</h3><p class="muted">/home-care-agencies/los-angeles</p></a>
+          <a class="card" href="#city-orange-county"><h3>Orange County</h3><p class="muted">/home-care-agencies/orange-county</p></a>
+          <a class="card" href="#city-san-diego"><h3>San Diego</h3><p class="muted">/home-care-agencies/san-diego</p></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="city-los-angeles">
+      <div class="wrap">
+        <p class="kicker">/home-care-agencies/[city]</p>
+        <h2>Best Home Care Agencies in Los Angeles, California</h2>
+        <p class="muted">Explore trusted Los Angeles home care agencies for seniors, dementia support, respite care, and 24-hour in-home care. Limited caregiver availability in your area—get matched within 24 hours.</p>
+        <div class="cta" id="client-form"><h3>Find a Caregiver Near You</h3><form class="two"><input placeholder="Name"><input placeholder="Phone"><textarea placeholder="Care needs"></textarea><input placeholder="Location"></form><p class="small muted">CRM Route: GoHighLevel → tags: client_lead, city_location</p></div>
+        <div class="grid g3" id="agency-cards"></div>
+        <div class="cta" id="caregiver-form" style="margin-top:18px"><h3>Apply for Caregiver Jobs</h3><form class="two"><input placeholder="Name"><input placeholder="Experience"><input placeholder="Availability"></form><p class="small muted">CRM Route: GoHighLevel → tags: caregiver_lead, city_location</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="agency-profile">
+      <div class="wrap">
+        <p class="kicker">/home-care-agencies/[city]/[agency-name]</p>
+        <h2>Sunrise Senior Home Care — Los Angeles, CA ★ 4.8</h2>
+        <div class="card"><h3>About Agency</h3><p class="muted">Non-medical in-home care with dementia care, 24-hour support, meal prep, transportation, and companionship services.</p></div>
+        <div class="card" style="margin-top:12px"><h3>Reviews</h3><p class="muted">Rating: ★★★★☆ (4.8/5). User reviews can be populated as submissions come in.</p></div>
+        <div class="cta" style="margin-top:12px"><h3>Get More Clients & Caregivers Automatically</h3><p>This agency is powered by modern systems that help manage leads, hiring, and communication more efficiently.</p><a href="https://rennxcare.com/rx-care" class="btn primary">Run Your Agency Like This →</a></div>
+        <div class="bar"><a class="btn alt" href="#client-form">Request Care</a><a class="btn primary" href="#caregiver-form">Apply as Caregiver</a></div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap small muted">Tracking: page visits, form submissions, agency clicks • Ready for GHL/Webflow integration • Future-ready: Top Rated, Recently Added Caregivers, Compare Agencies</div></footer>
+<script>
+const cities=["Los Angeles","Orange County","San Diego","Riverside","San Bernardino","Anaheim","Irvine","Santa Ana","Long Beach","Pasadena"];
+const services=["Dementia Care","24-Hour Care","Companion Care","Respite Care","Hospice Support"];
+const cards=[];
+for(let i=1;i<=50;i++){
+  cards.push({name:`California Care Agency ${i}`,rating:(4+Math.random()).toFixed(1),city:cities[i%cities.length],desc:"Trusted in-home senior care with trained, background-checked caregivers.",service:services[i%services.length]});
+}
+const el=document.getElementById('agency-cards');
+el.innerHTML=cards.map(a=>`<article class="card"><h3>${a.name}</h3><p>★ ${a.rating} • ${a.city}</p><p class="muted">${a.desc}</p><p class="small">Services: ${a.service}</p><a class="btn alt" href="#agency-profile">View Profile</a></article>`).join('');
+</script>
+</body>
+</html>
