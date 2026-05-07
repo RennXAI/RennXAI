@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ═══ SEO: City Page (/home-care-agencies/[city]) ═══
+       Title and meta description are updated dynamically
+       by app.js using data from CA_CITIES in data.js.
+       For production SSR/SSG, pre-render these values.      -->
+  <title>Home Care Agencies | RennXCare</title>
+  <meta name="description" content="Find top-rated home care agencies near you in California. Compare services, read reviews, and connect with vetted caregivers." />
+  <meta name="robots" content="index, follow" />
+  <!-- Canonical is set dynamically by app.js for SSG compatibility -->
+
+  <!-- Open Graph (values updated by app.js) -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="Home Care Agencies | RennXCare" />
+  <meta property="og:description" content="Find top-rated home care agencies near you in California." />
+  <meta property="og:site_name"   content="RennXCare" />
+
+  <!-- Structured Data placeholders — app.js injects city-specific schemas -->
+  <script id="city-schema" type="application/ld+json">{}</script>
+  <script id="breadcrumb-schema" type="application/ld+json">{}</script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/rennxcare.css" />
+</head>
+
+<body data-page="city">
+
+  <!-- Skip to main content -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ═══ NAVIGATION ═══ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html" aria-label="RennXCare home">
+        RennX<span>Care</span>
+      </a>
+      <div class="nav-links" role="list">
+        <a class="nav-link" href="index.html" role="listitem">Directory</a>
+        <a class="nav-link" href="city.html?city=los-angeles" role="listitem">Los Angeles</a>
+        <a class="nav-link" href="city.html?city=san-diego" role="listitem">San Diego</a>
+        <a class="nav-link" href="city.html?city=irvine" role="listitem">Orange County</a>
+        <a class="btn btn-primary btn-sm nav-cta" href="#client-form" role="listitem">Find Care</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Toggle navigation menu">
+        &#9776;
+      </button>
+    </div>
+    <div class="nav-mobile hidden" id="nav-mobile">
+      <a class="nav-link" href="index.html">Directory</a>
+      <a class="nav-link" href="city.html?city=los-angeles">Los Angeles</a>
+      <a class="nav-link" href="city.html?city=san-diego">San Diego</a>
+      <a class="nav-link" href="city.html?city=irvine">Orange County</a>
+      <a class="btn btn-primary btn-full" href="#client-form">Find Care Near You</a>
+    </div>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main id="main-content" id="city-content">
+
+    <!-- ── City Hero ───────────────────────────── -->
+    <section class="hero" aria-labelledby="city-h1">
+      <div class="wrap">
+        <!-- Breadcrumb (updated by app.js) -->
+        <nav class="breadcrumb" aria-label="Breadcrumb" id="breadcrumb">
+          <a href="index.html">Home Care Agencies</a>
+          <span class="breadcrumb-sep" aria-hidden="true"> / </span>
+          <span aria-current="page">City</span>
+        </nav>
+
+        <span class="kicker" id="city-kicker">/home-care-agencies/[city]</span>
+        <h1 id="city-h1" class="display">
+          Best Home Care Agencies in California
+        </h1>
+        <p id="city-intro" class="lead">
+          Find verified, background-checked home care agencies near you. Compare services, read reviews, and request care within 24 hours.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="#client-form">Request Care →</a>
+          <a class="btn btn-outline btn-lg" href="#caregiver-form">Apply as Caregiver</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Filter Bar + Agency Count ─────────── -->
+    <section class="section-sm" style="background:var(--white);border-bottom:1px solid var(--line)" aria-label="Filter agencies">
+      <div class="wrap">
+        <div class="flex-between gap-16" style="flex-wrap:wrap;gap:12px">
+          <div class="flex gap-12" style="flex-wrap:wrap;align-items:flex-end;gap:10px">
+            <!-- Search within city -->
+            <div style="min-width:180px">
+              <label for="city-search" class="sr-only">Search agencies in this city</label>
+              <input
+                type="search"
+                id="city-search"
+                placeholder="Search agencies…"
+                aria-label="Search agencies in this city"
+                style="margin:0"
+              />
+            </div>
+            <!-- Service filter -->
+            <div>
+              <label for="filter-service" class="sr-only">Filter by service</label>
+              <select id="filter-service" aria-label="Filter by service type" style="margin:0">
+                <option value="">All Services</option>
+                <option>Personal Care</option>
+                <option>Dementia Care</option>
+                <option>24-Hour Care</option>
+                <option>Companionship</option>
+                <option>Respite Care</option>
+                <option>Hospice Support</option>
+                <option>Transportation</option>
+                <option>Meal Preparation</option>
+                <option>Medication Reminders</option>
+              </select>
+            </div>
+            <!-- Rating filter -->
+            <div>
+              <label for="filter-rating" class="sr-only">Minimum rating</label>
+              <select id="filter-rating" aria-label="Minimum star rating" style="margin:0">
+                <option value="">Any Rating</option>
+                <option value="4.5">4.5+ Stars</option>
+                <option value="4.0">4.0+ Stars</option>
+                <option value="3.5">3.5+ Stars</option>
+              </select>
+            </div>
+            <!-- Sort -->
+            <div>
+              <label for="sort-agencies" class="sr-only">Sort agencies</label>
+              <select id="sort-agencies" aria-label="Sort agencies" style="margin:0">
+                <option value="featured">Featured First</option>
+                <option value="rating">Highest Rated</option>
+                <option value="reviews">Most Reviewed</option>
+              </select>
+            </div>
+          </div>
+          <!-- Live count -->
+          <p class="muted body-sm" aria-live="polite" aria-atomic="true">
+            Showing <strong id="agency-count">—</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Agency Grid + Sidebar ──────────────── -->
+    <section class="section" aria-labelledby="agencies-heading">
+      <div class="wrap">
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start">
+
+          <!-- Agency grid -->
+          <div>
+            <h2 id="agencies-heading" class="sr-only">Home care agencies in this city</h2>
+            <div
+              class="grid g-agency"
+              id="city-agencies"
+              aria-label="Agency listings"
+              aria-live="polite"
+              aria-atomic="false"
+            >
+              <!-- Skeleton loading placeholders -->
+              <div class="agency-card skeleton" style="height:220px" aria-hidden="true"></div>
+              <div class="agency-card skeleton" style="height:220px" aria-hidden="true"></div>
+              <div class="agency-card skeleton" style="height:220px" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <!-- Sticky sidebar: client form -->
+          <aside class="sticky-form" aria-label="Quick care request form">
+            <div class="lead-box" id="client-form">
+              <span class="kicker">Request Care</span>
+              <h3>Get Matched in 24 Hours</h3>
+              <p class="sub">Tell us your needs and we'll connect you with a verified agency in your area.</p>
+
+              <form
+                data-form-type="client"
+                data-form-location="city_section"
+                aria-label="Sidebar client care request form"
+                novalidate
+              >
+                <!-- Hidden context fields — values populated by app.js -->
+                <input type="hidden" name="lead_type"     value="client_lead" />
+                <input type="hidden" name="form_location" value="city_section" />
+                <input type="hidden" name="source_page"   value="" />
+                <input type="hidden" name="city"          value="" />
+
+                <div class="form-group">
+                  <label for="sidebar-client-name">Your Name <span aria-hidden="true">*</span></label>
+                  <input type="text" id="sidebar-client-name" name="full_name" placeholder="Full name" required autocomplete="name" aria-required="true" />
+                  <div class="form-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                  <label for="sidebar-client-phone">Phone Number <span aria-hidden="true">*</span></label>
+                  <input type="tel" id="sidebar-client-phone" name="phone" placeholder="(555) 555-5555" required autocomplete="tel" aria-required="true" />
+                  <div class="form-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                  <label for="sidebar-client-email">Email Address <span aria-hidden="true">*</span></label>
+                  <input type="email" id="sidebar-client-email" name="email" placeholder="your@email.com" required autocomplete="email" aria-required="true" />
+                  <div class="form-error" role="alert"></div>
+                </div>
+                <div class="form-group">
+                  <label for="sidebar-care-needs">Care Needs (optional)</label>
+                  <textarea id="sidebar-care-needs" name="care_needs" placeholder="Dementia care, 24-hour, companion care…" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                  Get My Free Match →
+                </button>
+                <p class="caption mt-8 text-center">No spam. Matched within 24 hours.</p>
+              </form>
+
+              <div class="form-success" role="status" aria-live="polite">
+                <h4>Request Received!</h4>
+                <p>A care coordinator will contact you within 24 hours.</p>
+              </div>
+            </div>
+
+            <!-- RX-Care mini CTA -->
+            <div class="rxcare-cta mt-16" style="padding:20px">
+              <h3 style="font-size:16px">Do You Own a Home Care Agency?</h3>
+              <p style="font-size:13px">Automate your leads, hiring, and client communication with RX-Care.</p>
+              <a
+                class="btn btn-white btn-sm"
+                href="https://rennxcare.com/rx-care"
+                onclick="if(window.RXTracking) RXTracking.rxCareCTAClick('city_page', '')"
+                aria-label="Learn about RX-Care for agency owners"
+              >
+                Learn About RX-Care →
+              </a>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Caregiver Form ─────────────────────── -->
+    <section class="section" id="caregiver-form" style="background:var(--white);border-top:1px solid var(--line)" aria-labelledby="city-cg-form-heading">
+      <div class="wrap-narrow">
+        <div class="lead-box-alt">
+          <span class="kicker">Caregiver Jobs</span>
+          <h2 id="city-cg-form-heading">Apply for Caregiver Jobs in This City</h2>
+          <p class="sub">Home care agencies in this area are actively hiring. Submit your application to be matched with open positions.</p>
+
+          <form
+            data-form-type="caregiver"
+            data-form-location="city_section"
+            aria-label="Caregiver job application form"
+            novalidate
+          >
+            <!-- Hidden context fields — values populated by app.js -->
+            <input type="hidden" name="lead_type"     value="caregiver_lead" />
+            <input type="hidden" name="form_location" value="city_section" />
+            <input type="hidden" name="source_page"   value="" />
+            <input type="hidden" name="city"          value="" />
+
+            <div class="form-grid form-grid2">
+              <div class="form-group">
+                <label for="city-cg-name">Full Name <span aria-hidden="true">*</span></label>
+                <input type="text" id="city-cg-name" name="full_name" placeholder="Full name" required autocomplete="name" aria-required="true" />
+                <div class="form-error" role="alert"></div>
+              </div>
+              <div class="form-group">
+                <label for="city-cg-phone">Phone Number <span aria-hidden="true">*</span></label>
+                <input type="tel" id="city-cg-phone" name="phone" placeholder="(555) 555-5555" required autocomplete="tel" aria-required="true" />
+                <div class="form-error" role="alert"></div>
+              </div>
+              <div class="form-group">
+                <label for="city-cg-email">Email Address <span aria-hidden="true">*</span></label>
+                <input type="email" id="city-cg-email" name="email" placeholder="your@email.com" required autocomplete="email" aria-required="true" />
+                <div class="form-error" role="alert"></div>
+              </div>
+              <div class="form-group">
+                <label for="city-cg-experience">Years of Experience</label>
+                <select id="city-cg-experience" name="experience">
+                  <option value="">Select experience</option>
+                  <option>Less than 1 year</option>
+                  <option>1–2 years</option>
+                  <option>3–5 years</option>
+                  <option>5–10 years</option>
+                  <option>10+ years</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Availability</label>
+              <div class="checkbox-group" style="flex-direction:row;flex-wrap:wrap;gap:16px">
+                <label class="checkbox-row"><input type="checkbox" name="availability" value="Full-time" /> Full-time</label>
+                <label class="checkbox-row"><input type="checkbox" name="availability" value="Part-time" /> Part-time</label>
+                <label class="checkbox-row"><input type="checkbox" name="availability" value="Live-in" /> Live-in</label>
+                <label class="checkbox-row"><input type="checkbox" name="availability" value="Overnight" /> Overnight</label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-full">
+              Submit My Application →
+            </button>
+          </form>
+
+          <div class="form-success" role="status" aria-live="polite">
+            <h4>Application Submitted!</h4>
+            <p>A placement coordinator will review your profile and reach out within 48 hours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RX-Care Full CTA ───────────────────── -->
+    <section class="section" aria-label="RX-Care agency platform promotion">
+      <div class="wrap-narrow">
+        <div class="rxcare-cta">
+          <span class="kicker" style="color:rgba(255,255,255,.7)">For Agency Owners</span>
+          <h2 style="color:#fff">Get More Clients & Caregivers Automatically</h2>
+          <p>Join the agencies using RennXCare's RX-Care system to automate lead follow-up, streamline caregiver hiring, and grow without adding overhead.</p>
+          <div class="value-props">
+            <span class="value-prop">Automated lead follow-up</span>
+            <span class="value-prop">Caregiver hiring pipeline</span>
+            <span class="value-prop">Review generation</span>
+            <span class="value-prop">Client communication</span>
+          </div>
+          <a
+            class="btn btn-white btn-lg"
+            href="https://rennxcare.com/rx-care"
+            onclick="if(window.RXTracking) RXTracking.rxCareCTAClick('city_page', '')"
+          >
+            See How RX-Care Works →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a class="nav-logo" href="index.html">RennX<span style="color:var(--text)">Care</span></a>
+          <p>California's home care agency directory, connecting families with vetted caregivers and agencies.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Browse Cities</h5>
+          <ul>
+            <li><a href="city.html?city=los-angeles">Los Angeles</a></li>
+            <li><a href="city.html?city=san-diego">San Diego</a></li>
+            <li><a href="city.html?city=irvine">Orange County</a></li>
+            <li><a href="city.html?city=riverside">Riverside</a></li>
+            <li><a href="city.html?city=fresno">Fresno</a></li>
+            <li><a href="city.html?city=sacramento">Sacramento</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul>
+            <li><a href="index.html">Dementia Care</a></li>
+            <li><a href="index.html">24-Hour Care</a></li>
+            <li><a href="index.html">Companion Care</a></li>
+            <li><a href="index.html">Respite Care</a></li>
+            <li><a href="index.html">Hospice Support</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>For Agencies</h5>
+          <ul>
+            <li><a href="https://rennxcare.com/rx-care">RX-Care System</a></li>
+            <li><a href="https://rennxcare.com/list-agency">List Your Agency</a></li>
+            <li><a href="https://rennxcare.com/contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2024 RennXCare. All rights reserved.</span>
+        <span>
+          <a href="https://rennxcare.com/privacy" style="color:inherit">Privacy Policy</a>
+          &nbsp;·&nbsp;
+          <a href="https://rennxcare.com/terms" style="color:inherit">Terms of Use</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/tracking.js"></script>
+  <script src="js/forms.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
