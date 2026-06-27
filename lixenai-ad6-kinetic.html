@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LixenAI — Ad 6: Missed Call to Booked Appointment</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; width: 1080px; height: 1920px; overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #fff; }
+  .stage { position: relative; width: 1080px; height: 1920px;
+    display: flex; align-items: center; justify-content: center; }
+  .scene { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 80px;
+    opacity: 0; transition: opacity 0.3s ease; text-align: center; }
+  .scene.active { opacity: 1; }
+
+  /* ── PHONE COMPONENT ── */
+  .phone { width: 380px; height: 680px; border: 4px solid #333;
+    border-radius: 44px; background: #111; position: relative;
+    flex-shrink: 0; overflow: hidden; }
+  .phone .status-bar { height: 40px; background: #111; display: flex;
+    align-items: center; justify-content: space-between;
+    padding: 0 24px; font-size: 18px; color: #888; }
+  .phone .notch-center { position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 28px; background: #000; border-radius: 0 0 18px 18px; }
+  .phone-body { padding: 8px 0; }
+
+  /* Incoming call screen */
+  .call-screen { padding: 40px 24px; display: flex; flex-direction: column;
+    align-items: center; }
+  .call-screen .call-type { font-size: 20px; color: #888; margin-bottom: 8px; }
+  .call-screen .caller-name { font-size: 40px; font-weight: 700; color: #fff;
+    margin-bottom: 24px; }
+  .call-screen .ring-anim { width: 80px; height: 80px; border-radius: 50%;
+    border: 3px solid #e53e3e; margin: 0 auto 16px;
+    animation: ring 1s ease-in-out infinite; }
+  @keyframes ring {
+    0%,100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.7; }
+  }
+  .call-screen .missed-label { font-size: 22px; color: #e53e3e;
+    font-weight: 600; letter-spacing: 0.05em; }
+
+  /* SMS thread */
+  .sms-header { background: #1a1a1a; padding: 16px 24px;
+    display: flex; align-items: center; gap: 16px; }
+  .sms-header .avatar { width: 44px; height: 44px; border-radius: 50%;
+    background: #333; display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .sms-header .contact { font-size: 22px; font-weight: 600; color: #fff; }
+  .sms-header .online { font-size: 16px; color: #4ade80; }
+
+  .sms-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .bubble { max-width: 80%; padding: 14px 18px; border-radius: 18px;
+    font-size: 20px; line-height: 1.4; }
+  .bubble.them { background: #2a2a2a; color: #fff; align-self: flex-start;
+    border-bottom-left-radius: 4px; }
+  .bubble.us { background: #0a84ff; color: #fff; align-self: flex-end;
+    border-bottom-right-radius: 4px; }
+  .time-stamp { font-size: 16px; color: #666; text-align: center; }
+
+  .bubble, .time-stamp { opacity: 0; transition: opacity 0.4s ease; }
+  .bubble.visible, .time-stamp.visible { opacity: 1; }
+
+  /* Calendar */
+  .cal-header { background: #0a84ff; padding: 18px 24px;
+    font-size: 22px; font-weight: 700; color: #fff; text-align: center; }
+  .cal-body { padding: 16px; }
+  .cal-slot { display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; border-radius: 10px; margin-bottom: 8px; }
+  .cal-slot.selected { background: #0a84ff; }
+  .cal-slot.dim { opacity: 0.35; }
+  .cal-slot .time-s { font-size: 20px; font-weight: 600; color: #fff; width: 80px; }
+  .cal-slot .avail { font-size: 18px; color: #4ade80; }
+  .cal-slot .booked-label { font-size: 18px; color: #fff; font-weight: 600; }
+  .confirm-banner { margin: 12px 16px; padding: 14px; background: #0a2e0a;
+    border: 2px solid #4ade80; border-radius: 10px; font-size: 20px;
+    color: #4ade80; font-weight: 600; text-align: center;
+    opacity: 0; transition: opacity 0.5s ease; }
+  .confirm-banner.visible { opacity: 1; }
+
+  /* ── SCENE STYLES ── */
+  #s1 { background: #000; }
+  #s1 .timestamp { font-size: 36px; color: #555; letter-spacing: 0.1em;
+    margin-bottom: 32px; font-weight: 500; }
+  #s1 .caption { font-size: 52px; font-weight: 700; color: #fff; margin-top: 32px; }
+  #s1 .sub { font-size: 36px; color: #e53e3e; margin-top: 12px; }
+
+  #s2 { background: #0a0a0a; }
+  #s2 .scenario { display: flex; flex-direction: column; gap: 28px; width: 100%; }
+  .scenario-row { display: flex; align-items: center; gap: 20px;
+    padding: 20px; border-radius: 10px; }
+  .scenario-row.bad { background: #1a0000; border: 2px solid #3a0000; }
+  .scenario-row.good { background: #001a00; border: 2px solid #003a00; }
+  .scenario-row .sr-label { font-size: 28px; font-weight: 700;
+    flex-shrink: 0; width: 120px; }
+  .scenario-row.bad .sr-label { color: #e53e3e; }
+  .scenario-row.good .sr-label { color: #4ade80; }
+  .scenario-row .sr-text { font-size: 36px; font-weight: 600; color: #fff; line-height: 1.3; }
+
+  #s3 { background: #000; flex-direction: column; gap: 40px; }
+  #s3 .label { font-size: 30px; color: #555; letter-spacing: 0.15em;
+    text-transform: uppercase; }
+
+  #s4 { background: #000; flex-direction: column; gap: 40px; }
+  #s4 .label { font-size: 30px; color: #555; letter-spacing: 0.15em;
+    text-transform: uppercase; }
+
+  #s5 { background: #000; }
+  #s5 .big-num { font-size: 160px; font-weight: 900; color: #fff;
+    line-height: 1.0; letter-spacing: -0.04em; }
+  #s5 .big-unit { font-size: 56px; color: #888; font-weight: 400; }
+  #s5 .result { font-size: 64px; font-weight: 700; color: #4ade80; margin-top: 24px; }
+  #s5 .sub { font-size: 36px; color: #555; margin-top: 16px; }
+
+  #s6 { background: #0a0a0a; }
+  #s6 .hed { font-size: 60px; font-weight: 700; line-height: 1.2; color: #fff;
+    margin-bottom: 32px; }
+  #s6 .pitch { font-size: 44px; color: #888; font-weight: 400; }
+
+  #s7 { background: #000; }
+  #s7 .logo { font-size: 34px; font-weight: 700; letter-spacing: 0.26em;
+    text-transform: uppercase; color: #666; margin-bottom: 56px; }
+  #s7 .cta { font-size: 84px; font-weight: 900; line-height: 1.05;
+    text-transform: uppercase; }
+  #s7 .url { margin-top: 60px; font-size: 40px; font-weight: 600;
+    border: 3px solid #fff; padding: 22px 56px; }
+  #s7 .disc { position: absolute; bottom: 56px; left: 80px; right: 80px;
+    font-size: 22px; color: #444; text-align: center; line-height: 1.6; }
+
+  .progress { position: fixed; bottom: 0; left: 0; height: 6px;
+    background: #4ade80; width: 0%; transition: width linear; z-index: 100; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <!-- S1: The missed call setup -->
+  <div class="scene" id="s1">
+    <div class="timestamp">8:14 PM</div>
+    <div class="phone">
+      <div class="notch-center"></div>
+      <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+      <div class="phone-body">
+        <div class="call-screen">
+          <div class="call-type">Incoming Call</div>
+          <div class="caller-name">Med Spa Client</div>
+          <div class="ring-anim"></div>
+          <div class="missed-label">Missed Call</div>
+        </div>
+      </div>
+    </div>
+    <div class="caption">Nobody answers.</div>
+    <div class="sub">Without a system — lead is gone.</div>
+  </div>
+
+  <!-- S2: With vs without -->
+  <div class="scene" id="s2">
+    <div class="scenario">
+      <div class="scenario-row bad">
+        <div class="sr-label">Without</div>
+        <div class="sr-text">Caller moves on.<br>Lead is cold by morning.</div>
+      </div>
+      <div class="scenario-row good">
+        <div class="sr-label">With LixenAI</div>
+        <div class="sr-text">Auto-text sent<br>in 30 seconds.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3: SMS demo -->
+  <div class="scene" id="s3">
+    <div class="label">8:14 PM — system fires</div>
+    <div class="phone">
+      <div class="notch-center"></div>
+      <div class="status-bar"><span>8:14 PM</span><span>●●●</span></div>
+      <div class="phone-body">
+        <div class="sms-header">
+          <div class="avatar">MS</div>
+          <div><div class="contact">Med Spa</div><div class="online">● Automated</div></div>
+        </div>
+        <div class="sms-body">
+          <div class="time-stamp" id="ts1">8:14 PM</div>
+          <div class="bubble them" id="b1">Hey! We saw you called — sorry we missed you. Can we help you book an appointment?</div>
+          <div class="bubble us" id="b2">Yes please! Tomorrow if possible</div>
+          <div class="bubble them" id="b3">Great! Here's our booking link 👇<br><span style="color:#0a84ff;text-decoration:underline">medspa.com/book</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: Calendar confirmation -->
+  <div class="scene" id="s4">
+    <div class="label">8:21 PM — appointment confirmed</div>
+    <div class="phone">
+      <div class="notch-center"></div>
+      <div class="status-bar"><span>8:21 PM</span><span>●●●</span></div>
+      <div class="phone-body">
+        <div class="cal-header">Select a Time</div>
+        <div class="cal-body">
+          <div class="cal-slot dim"><span class="time-s">9:00 AM</span><span style="color:#555">—</span></div>
+          <div class="cal-slot selected" id="cs"><span class="time-s">10:00 AM</span><span class="booked-label">✓ Selected</span></div>
+          <div class="cal-slot dim"><span class="time-s">11:00 AM</span><span class="avail">Available</span></div>
+          <div class="confirm-banner" id="conf">✓ Appointment Confirmed<br><span style="font-size:16px;font-weight:400;">Tuesday · 10:00 AM</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5: The number -->
+  <div class="scene" id="s5">
+    <div class="big-num">7</div>
+    <div class="big-unit">minutes.</div>
+    <div class="result">Missed call → booked appointment.</div>
+    <div class="sub">Zero manual effort from the business.</div>
+  </div>
+
+  <!-- S6: What you bring -->
+  <div class="scene" id="s6">
+    <div class="hed">This is what LixenAI Sales Partners bring to local businesses.</div>
+    <div class="pitch">A working system.<br>A real result.<br>You bring the sale.</div>
+  </div>
+
+  <!-- S7: CTA -->
+  <div class="scene" id="s7">
+    <div class="logo">LixenAI</div>
+    <div class="cta">Watch the<br>free overview<br>and apply.</div>
+    <div class="url">lixenai.com/partners</div>
+    <div class="disc">Sales Partners Program · Automation outcomes vary by business context and usage.</div>
+  </div>
+
+</div>
+<div class="progress" id="progress"></div>
+<script>
+  const TOTAL = 40000;
+  const schedule = [
+    { id:'s1', start:0,     end:5500 },
+    { id:'s2', start:5500,  end:9500 },
+    { id:'s3', start:9500,  end:18000, onEnter: enterS3 },
+    { id:'s4', start:18000, end:25000, onEnter: enterS4 },
+    { id:'s5', start:25000, end:30000 },
+    { id:'s6', start:30000, end:34500 },
+    { id:'s7', start:34500, end:40000 },
+  ];
+  function enterS3() {
+    [['ts1',200],['b1',600],['b2',2800],['b3',4500]].forEach(([id,d]) =>
+      setTimeout(() => document.getElementById(id).classList.add('visible'), d));
+  }
+  function enterS4() {
+    setTimeout(() => document.getElementById('conf').classList.add('visible'), 2000);
+  }
+  let startTime=null, active=null, raf=null;
+  function tick(ts) {
+    if (!startTime) startTime=ts;
+    const t = ts-startTime;
+    document.getElementById('progress').style.width = Math.min(t/TOTAL*100,100)+'%';
+    for (const s of schedule) {
+      const el = document.getElementById(s.id);
+      if (t >= s.start && t < s.end && active !== s.id) {
+        if (active) document.getElementById(active).classList.remove('active');
+        el.classList.add('active'); active=s.id;
+        if (s.onEnter) s.onEnter();
+      }
+    }
+    if (t < TOTAL) raf=requestAnimationFrame(tick);
+  }
+  function start() {
+    if(raf) cancelAnimationFrame(raf); raf=null; startTime=null; active=null;
+    ['ts1','b1','b2','b3'].forEach(id => document.getElementById(id).classList.remove('visible'));
+    document.getElementById('conf').classList.remove('visible');
+    schedule.forEach(s => document.getElementById(s.id).classList.remove('active'));
+    document.getElementById('progress').style.width='0%';
+    raf=requestAnimationFrame(tick);
+  }
+  window.addEventListener('load', () => setTimeout(start, 800));
+  document.getElementById('stage').addEventListener('click', start);
+  function scaleStage() {
+    const s = Math.min(window.innerWidth/1080, window.innerHeight/1920);
+    const st = document.querySelector('.stage');
+    st.style.transform=`scale(${s})`; st.style.transformOrigin='top left';
+    document.body.style.cssText='width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;';
+  }
+  window.addEventListener('resize', scaleStage); scaleStage();
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LixenAI — Ad 1: You're Not a Developer. That's Fine.</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; width: 1080px; height: 1920px; overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #fff; }
+
+  .stage { position: relative; width: 1080px; height: 1920px; background: #000;
+    display: flex; align-items: center; justify-content: center; }
+
+  .scene { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 80px;
+    opacity: 0; transition: opacity 0.3s ease; text-align: center; }
+  .scene.active { opacity: 1; }
+
+  /* ── S1: Hook — the assumption ── */
+  #s1 { background: #0a0a0a; }
+  #s1 .tag { font-size: 26px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: #555; margin-bottom: 48px; }
+  #s1 .q { font-size: 72px; font-weight: 800; line-height: 1.1; color: #fff; }
+  #s1 .q em { color: #e53e3e; font-style: normal; }
+
+  /* ── S2: Subvert ── */
+  #s2 { background: #fff; }
+  #s2 .main { font-size: 110px; font-weight: 900; line-height: 1.0;
+    color: #000; letter-spacing: -0.03em; }
+  #s2 .sub { font-size: 52px; color: #666; margin-top: 28px; font-weight: 400; }
+
+  /* ── S3: What businesses care about ── */
+  #s3 { background: #000; }
+  #s3 .label { font-size: 30px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: #666; margin-bottom: 40px; }
+  #s3 .care { font-size: 78px; font-weight: 800; line-height: 1.1; }
+  #s3 .care span { display: block; }
+  #s3 .care .hi { color: #fff; }
+  #s3 .care .lo { color: #444; font-size: 52px; font-weight: 400; margin-top: 8px; }
+
+  /* ── S4: The one thing arrow ── */
+  #s4 { background: #111; flex-direction: row; gap: 0; align-items: stretch;
+    padding: 0; }
+  .col { flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 60px 40px; }
+  .col-left { background: #1a1a1a; border-right: 2px solid #333; }
+  .col-right { background: #000; }
+  .col .label-sm { font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: #555; margin-bottom: 24px; }
+  .col .val { font-size: 58px; font-weight: 800; line-height: 1.15; }
+  .col-left .val { color: #e53e3e; }
+  .col-right .val { color: #4ade80; }
+  .arrow-row { position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%,-50%);
+    width: 80px; height: 80px; background: #000; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; border: 3px solid #444; z-index: 10; }
+
+  /* ── S5: What LixenAI gives you ── */
+  #s5 { background: #000; }
+  #s5 .hed { font-size: 44px; color: #666; font-weight: 400; margin-bottom: 48px; }
+  .give-item { display: flex; align-items: center; gap: 28px;
+    font-size: 60px; font-weight: 700; width: 100%;
+    padding: 20px 0; border-bottom: 2px solid #1a1a1a;
+    opacity: 0; transform: translateX(-24px);
+    transition: opacity 0.35s ease, transform 0.35s ease; }
+  .give-item:first-of-type { border-top: 2px solid #1a1a1a; }
+  .give-item .dot { width: 16px; height: 16px; border-radius: 50%;
+    background: #fff; flex-shrink: 0; }
+  .give-item.show { opacity: 1; transform: translateX(0); }
+
+  /* ── S6: You show up. You close. ── */
+  #s6 { background: #fff; }
+  #s6 .hed { font-size: 108px; font-weight: 900; color: #000;
+    line-height: 1.0; letter-spacing: -0.03em; }
+  #s6 .sub { font-size: 44px; color: #888; margin-top: 28px; }
+
+  /* ── S7: CTA ── */
+  #s7 { background: #000; }
+  #s7 .logo { font-size: 34px; font-weight: 700; letter-spacing: 0.26em;
+    text-transform: uppercase; color: #666; margin-bottom: 56px; }
+  #s7 .cta { font-size: 84px; font-weight: 900; line-height: 1.05;
+    text-transform: uppercase; letter-spacing: -0.01em; }
+  #s7 .url { margin-top: 60px; font-size: 40px; font-weight: 600;
+    border: 3px solid #fff; padding: 22px 56px; }
+  #s7 .disc { position: absolute; bottom: 56px; left: 80px; right: 80px;
+    font-size: 22px; color: #444; text-align: center; line-height: 1.6; }
+
+  .progress { position: fixed; bottom: 0; left: 0; height: 6px;
+    background: #e53e3e; width: 0%; transition: width linear; z-index: 100; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <div class="scene" id="s1">
+    <div class="tag">The assumption</div>
+    <div class="q">"I'd have to become a <em>developer</em> to sell AI."</div>
+  </div>
+
+  <div class="scene" id="s2">
+    <div class="main">You don't.</div>
+    <div class="sub">Not even close.</div>
+  </div>
+
+  <div class="scene" id="s3">
+    <div class="label">Local businesses care about</div>
+    <div class="care">
+      <span class="hi">More booked appointments.</span>
+      <span class="lo">Not your tech stack.</span>
+    </div>
+  </div>
+
+  <div class="scene" id="s4">
+    <div class="col col-left">
+      <div class="label-sm">Without a system</div>
+      <div class="val">Missed call.<br>Lost lead.<br>Gone.</div>
+    </div>
+    <div class="arrow-row">→</div>
+    <div class="col col-right">
+      <div class="label-sm">With LixenAI</div>
+      <div class="val">Auto follow-up.<br>Booking link.<br>Done.</div>
+    </div>
+  </div>
+
+  <div class="scene" id="s5">
+    <div class="hed">LixenAI gives you:</div>
+    <div class="give-item" id="g1"><div class="dot"></div>The offer</div>
+    <div class="give-item" id="g2"><div class="dot"></div>The demo</div>
+    <div class="give-item" id="g3"><div class="dot"></div>The scripts</div>
+    <div class="give-item" id="g4"><div class="dot"></div>Backend fulfillment</div>
+  </div>
+
+  <div class="scene" id="s6">
+    <div class="hed">You show up.<br>You present.<br>You close.</div>
+    <div class="sub">Someone else handles setup.</div>
+  </div>
+
+  <div class="scene" id="s7">
+    <div class="logo">LixenAI</div>
+    <div class="cta">Watch the<br>free overview<br>and apply.</div>
+    <div class="url">lixenai.com/partners</div>
+    <div class="disc">Sales Partners Program · Success requires learning the system and consistent prospecting.</div>
+  </div>
+
+</div>
+<div class="progress" id="progress"></div>
+<script>
+  const TOTAL = 35000;
+  const schedule = [
+    { id:'s1', start:0,     end:3500 },
+    { id:'s2', start:3500,  end:6500 },
+    { id:'s3', start:6500,  end:11000 },
+    { id:'s4', start:11000, end:17000 },
+    { id:'s5', start:17000, end:24000, onEnter: enterS5 },
+    { id:'s6', start:24000, end:29000 },
+    { id:'s7', start:29000, end:35000 },
+  ];
+  function enterS5() {
+    [['g1',0],['g2',800],['g3',1600],['g4',2400]].forEach(([id,d]) =>
+      setTimeout(() => document.getElementById(id).classList.add('show'), d));
+  }
+  let startTime=null, active=null, raf=null;
+  function tick(ts) {
+    if (!startTime) startTime=ts;
+    const t = ts-startTime;
+    document.getElementById('progress').style.width = Math.min(t/TOTAL*100,100)+'%';
+    for (const s of schedule) {
+      const el = document.getElementById(s.id);
+      if (t >= s.start && t < s.end && active !== s.id) {
+        if (active) document.getElementById(active).classList.remove('active');
+        el.classList.add('active'); active=s.id;
+        if (s.onEnter) s.onEnter();
+      }
+    }
+    if (t < TOTAL) raf=requestAnimationFrame(tick);
+  }
+  function start() {
+    if(raf) cancelAnimationFrame(raf); raf=null; startTime=null; active=null;
+    ['g1','g2','g3','g4'].forEach(id => document.getElementById(id).classList.remove('show'));
+    schedule.forEach(s => document.getElementById(s.id).classList.remove('active'));
+    document.getElementById('progress').style.width='0%';
+    raf=requestAnimationFrame(tick);
+  }
+  window.addEventListener('load', () => setTimeout(start, 800));
+  document.getElementById('stage').addEventListener('click', start);
+  function scaleStage() {
+    const s = Math.min(window.innerWidth/1080, window.innerHeight/1920);
+    const st = document.querySelector('.stage');
+    st.style.transform = `scale(${s})`; st.style.transformOrigin='top left';
+    document.body.style.cssText='width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;';
+  }
+  window.addEventListener('resize', scaleStage); scaleStage();
+</script>
+</body>
+</html>
