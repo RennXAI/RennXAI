@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LixenAI — Ad 4: You Don't Build Alone.</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #fff; width: 1080px; height: 1920px; overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #000; }
+  .stage { position: relative; width: 1080px; height: 1920px;
+    display: flex; align-items: center; justify-content: center; }
+  .scene { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 80px;
+    opacity: 0; transition: opacity 0.3s ease; text-align: center; }
+  .scene.active { opacity: 1; }
+
+  /* S1: Hook */
+  #s1 { background: #f5f5f5; }
+  #s1 .pre { font-size: 34px; color: #999; letter-spacing: 0.18em;
+    text-transform: uppercase; margin-bottom: 32px; }
+  #s1 .main { font-size: 96px; font-weight: 900; color: #000; line-height: 1.0;
+    letter-spacing: -0.03em; }
+  #s1 .sub { font-size: 48px; color: #888; margin-top: 24px; font-weight: 400; }
+
+  /* S2: Day one */
+  #s2 { background: #000; }
+  #s2 .badge { display: inline-block; font-size: 24px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: #888; border: 2px solid #333;
+    padding: 12px 28px; margin-bottom: 40px; }
+  #s2 .hed { font-size: 80px; font-weight: 900; color: #fff; line-height: 1.05; }
+
+  /* S3: Checklist — the main event */
+  #s3 { background: #fff; padding: 56px 80px; }
+  #s3 .title { font-size: 36px; color: #999; letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 40px; text-align: left; width: 100%; }
+  .check-item { display: flex; align-items: center; gap: 28px; width: 100%;
+    padding: 24px 0; border-bottom: 2px solid #eee;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.35s ease, transform 0.35s ease; }
+  .check-item:first-of-type { border-top: 2px solid #eee; }
+  .check-item .box { width: 52px; height: 52px; border: 3px solid #000;
+    border-radius: 8px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; font-size: 28px; background: transparent;
+    transition: background 0.3s ease; }
+  .check-item.checked .box { background: #000; color: #fff; }
+  .check-item .label { font-size: 56px; font-weight: 700; color: #000;
+    text-align: left; }
+  .check-item .sub { font-size: 26px; color: #aaa; font-weight: 400; margin-top: 4px; }
+  .check-item.show { opacity: 1; transform: translateX(0); }
+
+  /* S4: Playbooks */
+  #s4 { background: #000; }
+  #s4 .hed { font-size: 50px; color: #888; margin-bottom: 40px; font-weight: 400; }
+  .playbook-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+  .pb { padding: 18px 28px; border: 2px solid #333; border-radius: 6px;
+    font-size: 36px; font-weight: 600; color: #fff;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.25s ease, transform 0.25s ease; }
+  .pb.show { opacity: 1; transform: translateY(0); }
+  #s4 .footer { margin-top: 40px; font-size: 36px; color: #555;
+    font-style: italic; }
+
+  /* S5: The deal */
+  #s5 { background: #f5f5f5; }
+  .deal-row { display: flex; align-items: center; width: 100%;
+    gap: 20px; padding: 20px 0; border-bottom: 2px solid #ddd; }
+  .deal-row:first-of-type { border-top: 2px solid #ddd; }
+  .deal-you { flex: 1; font-size: 52px; font-weight: 800; color: #000; text-align: right; }
+  .deal-plus { font-size: 36px; color: #bbb; flex-shrink: 0; }
+  .deal-lixen { flex: 1; font-size: 52px; font-weight: 800; color: #000; text-align: left; }
+  #s5 .equals { font-size: 60px; font-weight: 900; color: #000; margin-top: 32px; }
+
+  /* S6: CTA */
+  #s6 { background: #000; }
+  #s6 .logo { font-size: 34px; font-weight: 700; letter-spacing: 0.26em;
+    text-transform: uppercase; color: #666; margin-bottom: 56px; }
+  #s6 .cta { font-size: 84px; font-weight: 900; line-height: 1.05;
+    text-transform: uppercase; color: #fff; }
+  #s6 .url { margin-top: 60px; font-size: 40px; font-weight: 600; color: #fff;
+    border: 3px solid #fff; padding: 22px 56px; }
+  #s6 .disc { position: absolute; bottom: 56px; left: 80px; right: 80px;
+    font-size: 22px; color: #444; text-align: center; line-height: 1.6; }
+
+  .progress { position: fixed; bottom: 0; left: 0; height: 6px;
+    background: #000; width: 0%; transition: width linear; z-index: 100; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <div class="scene" id="s1">
+    <div class="pre">Before you say no —</div>
+    <div class="main">Here's what's already built for you.</div>
+    <div class="sub">Day one. Ready to use.</div>
+  </div>
+
+  <div class="scene" id="s2">
+    <div class="badge">LixenAI Partner Program</div>
+    <div class="hed">You're not starting<br>from zero.</div>
+  </div>
+
+  <div class="scene" id="s3">
+    <div class="title">What you get from day one:</div>
+    <div class="check-item" id="c1"><div class="box"></div><div><div class="label">Ready-to-sell offer</div></div></div>
+    <div class="check-item" id="c2"><div class="box"></div><div><div class="label">Demo materials</div></div></div>
+    <div class="check-item" id="c3"><div class="box"></div><div><div class="label">Sales scripts</div></div></div>
+    <div class="check-item" id="c4"><div class="box"></div><div><div class="label">Objection responses</div></div></div>
+    <div class="check-item" id="c5"><div class="box"></div><div><div class="label">Backend fulfillment</div></div></div>
+  </div>
+
+  <div class="scene" id="s4">
+    <div class="hed">Industry playbooks included:</div>
+    <div class="playbook-grid">
+      <div class="pb" id="pb1">Med Spa</div>
+      <div class="pb" id="pb2">HVAC</div>
+      <div class="pb" id="pb3">Dental</div>
+      <div class="pb" id="pb4">Roofing</div>
+      <div class="pb" id="pb5">Chiro</div>
+      <div class="pb" id="pb6">Real Estate</div>
+      <div class="pb" id="pb7">+ more</div>
+    </div>
+    <div class="footer">One playbook per industry. Already written.</div>
+  </div>
+
+  <div class="scene" id="s5">
+    <div class="deal-row">
+      <div class="deal-you">You bring</div>
+      <div class="deal-plus">+</div>
+      <div class="deal-lixen">We bring</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-you">Sales ability</div>
+      <div class="deal-plus">+</div>
+      <div class="deal-lixen">The system</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-you">The close</div>
+      <div class="deal-plus">+</div>
+      <div class="deal-lixen">The setup</div>
+    </div>
+    <div class="equals">= A complete partnership.</div>
+  </div>
+
+  <div class="scene" id="s6">
+    <div class="logo">LixenAI</div>
+    <div class="cta">Watch the<br>free overview<br>and apply.</div>
+    <div class="url">lixenai.com/partners</div>
+    <div class="disc">Sales Partners Program · Success requires learning the system and consistent action.</div>
+  </div>
+
+</div>
+<div class="progress" id="progress"></div>
+<script>
+  const TOTAL = 38000;
+  const schedule = [
+    { id:'s1', start:0,     end:4000 },
+    { id:'s2', start:4000,  end:7500 },
+    { id:'s3', start:7500,  end:16500, onEnter: enterS3 },
+    { id:'s4', start:16500, end:23000, onEnter: enterS4 },
+    { id:'s5', start:23000, end:30000 },
+    { id:'s6', start:30000, end:38000 },
+  ];
+  function enterS3() {
+    const ids = ['c1','c2','c3','c4','c5'];
+    ids.forEach((id,i) => {
+      const d = i*900;
+      setTimeout(() => {
+        document.getElementById(id).classList.add('show');
+        setTimeout(() => document.getElementById(id).classList.add('checked'), 350);
+      }, d);
+    });
+  }
+  function enterS4() {
+    ['pb1','pb2','pb3','pb4','pb5','pb6','pb7'].forEach((id,i) =>
+      setTimeout(() => document.getElementById(id).classList.add('show'), i*250));
+  }
+  let startTime=null, active=null, raf=null;
+  function tick(ts) {
+    if (!startTime) startTime=ts;
+    const t = ts-startTime;
+    document.getElementById('progress').style.width = Math.min(t/TOTAL*100,100)+'%';
+    for (const s of schedule) {
+      const el = document.getElementById(s.id);
+      if (t >= s.start && t < s.end && active !== s.id) {
+        if (active) document.getElementById(active).classList.remove('active');
+        el.classList.add('active'); active=s.id;
+        if (s.onEnter) s.onEnter();
+      }
+    }
+    if (t < TOTAL) raf=requestAnimationFrame(tick);
+  }
+  function start() {
+    if(raf) cancelAnimationFrame(raf); raf=null; startTime=null; active=null;
+    ['c1','c2','c3','c4','c5'].forEach(id => {
+      document.getElementById(id).classList.remove('show','checked');
+    });
+    ['pb1','pb2','pb3','pb4','pb5','pb6','pb7'].forEach(id =>
+      document.getElementById(id).classList.remove('show'));
+    schedule.forEach(s => document.getElementById(s.id).classList.remove('active'));
+    document.getElementById('progress').style.width='0%';
+    raf=requestAnimationFrame(tick);
+  }
+  window.addEventListener('load', () => setTimeout(start, 800));
+  document.getElementById('stage').addEventListener('click', start);
+  function scaleStage() {
+    const s = Math.min(window.innerWidth/1080, window.innerHeight/1920);
+    const st = document.querySelector('.stage');
+    st.style.transform=`scale(${s})`; st.style.transformOrigin='top left';
+    document.body.style.cssText='width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;';
+  }
+  window.addEventListener('resize', scaleStage); scaleStage();
+</script>
+</body>
+</html>

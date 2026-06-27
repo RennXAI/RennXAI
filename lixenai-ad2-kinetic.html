@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LixenAI — Ad 2: Same Skill. New Market.</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0d; width: 1080px; height: 1920px; overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #fff; }
+  .stage { position: relative; width: 1080px; height: 1920px;
+    display: flex; align-items: center; justify-content: center; }
+  .scene { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 80px;
+    opacity: 0; transition: opacity 0.25s ease; text-align: center; }
+  .scene.active { opacity: 1; }
+
+  /* S1: UGC-style hook */
+  #s1 { background: #111; }
+  #s1 .speaker { font-size: 32px; color: #555; letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 36px; }
+  #s1 .quote { font-size: 72px; font-weight: 700; line-height: 1.15; font-style: italic; color: #ddd; }
+  #s1 .attr { margin-top: 40px; font-size: 32px; color: #555; }
+
+  /* S2: The expectation vs reality */
+  #s2 { background: #000; }
+  #s2 .expect { font-size: 52px; color: #555; font-weight: 400; margin-bottom: 24px; }
+  #s2 .reveal { font-size: 100px; font-weight: 900; color: #fff; line-height: 1.0;
+    letter-spacing: -0.03em; }
+
+  /* S3: Skills stack — the big reveal */
+  #s3 { background: #fff; padding: 60px 80px; }
+  .skill-row { display: flex; align-items: center; gap: 24px; width: 100%;
+    padding: 26px 0; border-bottom: 2px solid #e5e5e5; text-align: left;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease; }
+  .skill-row:first-of-type { border-top: 2px solid #e5e5e5; }
+  .skill-row .num { font-size: 28px; color: #bbb; font-weight: 600; width: 40px; flex-shrink: 0; }
+  .skill-row .skill { font-size: 72px; font-weight: 900; color: #000; letter-spacing: -0.02em; }
+  .skill-row.show { opacity: 1; transform: translateY(0); }
+
+  /* S4: The pivot */
+  #s4 { background: #000; }
+  #s4 .old { font-size: 46px; color: #555; text-decoration: line-through; margin-bottom: 16px; }
+  #s4 .divider { width: 80px; height: 3px; background: #333; margin: 24px auto; }
+  #s4 .new { font-size: 90px; font-weight: 900; color: #fff; line-height: 1.05; }
+
+  /* S5: What transfers */
+  #s5 { background: #111; }
+  #s5 .hed { font-size: 46px; color: #888; margin-bottom: 40px; font-weight: 400; }
+  .transfer { display: flex; align-items: center; justify-content: center;
+    gap: 32px; margin: 16px 0; width: 100%; }
+  .t-box { flex: 1; padding: 28px 20px; background: #1a1a1a; border-radius: 8px;
+    font-size: 42px; font-weight: 700; }
+  .t-arrow { font-size: 36px; color: #555; flex-shrink: 0; }
+  .t-box.old-v { color: #666; border: 2px solid #222; }
+  .t-box.new-v { color: #fff; border: 2px solid #444; }
+
+  /* S6: CTA */
+  #s6 { background: #000; }
+  #s6 .logo { font-size: 34px; font-weight: 700; letter-spacing: 0.26em;
+    text-transform: uppercase; color: #666; margin-bottom: 56px; }
+  #s6 .cta { font-size: 84px; font-weight: 900; line-height: 1.05;
+    text-transform: uppercase; }
+  #s6 .url { margin-top: 60px; font-size: 40px; font-weight: 600;
+    border: 3px solid #fff; padding: 22px 56px; }
+  #s6 .disc { position: absolute; bottom: 56px; left: 80px; right: 80px;
+    font-size: 22px; color: #444; text-align: center; line-height: 1.6; }
+
+  .progress { position: fixed; bottom: 0; left: 0; height: 6px;
+    background: #fff; width: 0%; transition: width linear; z-index: 100; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <div class="scene" id="s1">
+    <div class="speaker">Experienced in sales?</div>
+    <div class="quote">"Switching to AI didn't mean starting over."</div>
+    <div class="attr">— Every skill still applies.</div>
+  </div>
+
+  <div class="scene" id="s2">
+    <div class="expect">I assumed I'd need a whole new skill set.</div>
+    <div class="reveal">I didn't.</div>
+  </div>
+
+  <div class="scene" id="s3">
+    <div class="skill-row" id="sk1"><span class="num">01</span><span class="skill">PROSPECTING</span></div>
+    <div class="skill-row" id="sk2"><span class="num">02</span><span class="skill">DISCOVERY</span></div>
+    <div class="skill-row" id="sk3"><span class="num">03</span><span class="skill">OBJECTIONS</span></div>
+    <div class="skill-row" id="sk4"><span class="num">04</span><span class="skill">CLOSING</span></div>
+  </div>
+
+  <div class="scene" id="s4">
+    <div class="old">Learn to build AI</div>
+    <div class="divider"></div>
+    <div class="new">Same skills.<br>New product.</div>
+  </div>
+
+  <div class="scene" id="s5">
+    <div class="hed">What changed:</div>
+    <div class="transfer">
+      <div class="t-box old-v">SaaS tool</div>
+      <div class="t-arrow">→</div>
+      <div class="t-box new-v">AI automation</div>
+    </div>
+    <div class="transfer">
+      <div class="t-box old-v">Your old market</div>
+      <div class="t-arrow">→</div>
+      <div class="t-box new-v">Local service<br>businesses</div>
+    </div>
+    <div class="transfer">
+      <div class="t-box old-v">Figure it out alone</div>
+      <div class="t-arrow">→</div>
+      <div class="t-box new-v">LixenAI builds<br>the system</div>
+    </div>
+  </div>
+
+  <div class="scene" id="s6">
+    <div class="logo">LixenAI</div>
+    <div class="cta">Watch the<br>free overview<br>and apply.</div>
+    <div class="url">lixenai.com/partners</div>
+    <div class="disc">Sales Partners Program · Success requires effort, practice, and consistent action.</div>
+  </div>
+
+</div>
+<div class="progress" id="progress"></div>
+<script>
+  const TOTAL = 33000;
+  const schedule = [
+    { id:'s1', start:0,     end:4000 },
+    { id:'s2', start:4000,  end:7500 },
+    { id:'s3', start:7500,  end:14000, onEnter: enterS3 },
+    { id:'s4', start:14000, end:18500 },
+    { id:'s5', start:18500, end:27000 },
+    { id:'s6', start:27000, end:33000 },
+  ];
+  function enterS3() {
+    [['sk1',0],['sk2',900],['sk3',1800],['sk4',2700]].forEach(([id,d]) =>
+      setTimeout(() => document.getElementById(id).classList.add('show'), d));
+  }
+  let startTime=null, active=null, raf=null;
+  function tick(ts) {
+    if (!startTime) startTime=ts;
+    const t = ts-startTime;
+    document.getElementById('progress').style.width = Math.min(t/TOTAL*100,100)+'%';
+    for (const s of schedule) {
+      const el = document.getElementById(s.id);
+      if (t >= s.start && t < s.end && active !== s.id) {
+        if (active) document.getElementById(active).classList.remove('active');
+        el.classList.add('active'); active=s.id;
+        if (s.onEnter) s.onEnter();
+      }
+    }
+    if (t < TOTAL) raf=requestAnimationFrame(tick);
+  }
+  function start() {
+    if(raf) cancelAnimationFrame(raf); raf=null; startTime=null; active=null;
+    ['sk1','sk2','sk3','sk4'].forEach(id => document.getElementById(id).classList.remove('show'));
+    schedule.forEach(s => document.getElementById(s.id).classList.remove('active'));
+    document.getElementById('progress').style.width='0%';
+    raf=requestAnimationFrame(tick);
+  }
+  window.addEventListener('load', () => setTimeout(start, 800));
+  document.getElementById('stage').addEventListener('click', start);
+  function scaleStage() {
+    const s = Math.min(window.innerWidth/1080, window.innerHeight/1920);
+    const st = document.querySelector('.stage');
+    st.style.transform=`scale(${s})`; st.style.transformOrigin='top left';
+    document.body.style.cssText='width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;';
+  }
+  window.addEventListener('resize', scaleStage); scaleStage();
+</script>
+</body>
+</html>

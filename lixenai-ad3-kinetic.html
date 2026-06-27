@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LixenAI — Ad 3: The Problem Is Already There.</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; width: 1080px; height: 1920px; overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #fff; }
+  .stage { position: relative; width: 1080px; height: 1920px;
+    display: flex; align-items: center; justify-content: center; }
+  .scene { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 80px;
+    opacity: 0; transition: opacity 0.3s ease; text-align: center; }
+  .scene.active { opacity: 1; }
+
+  /* S1: The missed call moment */
+  #s1 { background: #0a0a0a; }
+  .phone-mockup { width: 340px; height: 600px; border: 3px solid #333;
+    border-radius: 40px; background: #111; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; margin-bottom: 48px; position: relative; }
+  .phone-mockup .notch { width: 120px; height: 28px; background: #0a0a0a;
+    border-radius: 0 0 20px 20px; position: absolute; top: 0; }
+  .phone-mockup .call-info { text-align: center; }
+  .phone-mockup .caller { font-size: 28px; color: #888; margin-bottom: 12px; }
+  .phone-mockup .calling { font-size: 44px; font-weight: 700; color: #fff; margin-bottom: 40px; }
+  .phone-mockup .status { font-size: 24px; color: #e53e3e; letter-spacing: 0.1em; }
+  .phone-mockup .missed { font-size: 22px; color: #555; margin-top: 8px; }
+  #s1 .caption { font-size: 48px; font-weight: 700; color: #fff; }
+  #s1 .sub { font-size: 34px; color: #e53e3e; margin-top: 16px; }
+
+  /* S2: Time stamp */
+  #s2 { background: #000; }
+  #s2 .time { font-size: 120px; font-weight: 900; color: #fff; letter-spacing: -0.03em; }
+  #s2 .label { font-size: 40px; color: #555; margin-top: 16px; }
+  #s2 .outcome { margin-top: 48px; font-size: 64px; font-weight: 700; color: #e53e3e; }
+
+  /* S3: Problem montage */
+  #s3 { background: #0a0a0a; padding: 60px 80px; }
+  #s3 .intro { font-size: 36px; color: #666; margin-bottom: 40px; font-weight: 400; }
+  .prob-item { display: flex; align-items: center; gap: 24px; width: 100%;
+    padding: 22px 0; border-bottom: 2px solid #1c1c1c; text-align: left;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease; }
+  .prob-item:first-of-type { border-top: 2px solid #1c1c1c; }
+  .prob-item .icon { font-size: 36px; flex-shrink: 0; }
+  .prob-item .text { font-size: 56px; font-weight: 700; color: #fff; }
+  .prob-item .cost { font-size: 28px; color: #e53e3e; margin-top: 4px; font-weight: 400; }
+  .prob-item.show { opacity: 1; transform: translateX(0); }
+
+  /* S4: The flip — industries */
+  #s4 { background: #fff; }
+  #s4 .intro { font-size: 40px; color: #888; margin-bottom: 36px; }
+  #s4 .industries { display: flex; flex-wrap: wrap; gap: 16px;
+    justify-content: center; }
+  .ind-tag { padding: 16px 28px; border: 2px solid #ddd; border-radius: 6px;
+    font-size: 36px; font-weight: 600; color: #333;
+    opacity: 0; transform: scale(0.9);
+    transition: opacity 0.25s ease, transform 0.25s ease; }
+  .ind-tag.show { opacity: 1; transform: scale(1); }
+
+  /* S5: The fix */
+  #s5 { background: #000; }
+  #s5 .hed { font-size: 50px; color: #888; margin-bottom: 40px; font-weight: 400; }
+  .fix-row { display: flex; align-items: center; gap: 20px; width: 100%;
+    padding: 20px 0; border-bottom: 2px solid #1a1a1a; text-align: left; }
+  .fix-row .from { font-size: 44px; color: #555; flex: 1; text-decoration: line-through; }
+  .fix-row .arr { font-size: 28px; color: #666; flex-shrink: 0; }
+  .fix-row .to { font-size: 44px; color: #4ade80; flex: 1; font-weight: 700; }
+
+  /* S6: CTA */
+  #s6 { background: #000; }
+  #s6 .logo { font-size: 34px; font-weight: 700; letter-spacing: 0.26em;
+    text-transform: uppercase; color: #666; margin-bottom: 56px; }
+  #s6 .cta { font-size: 84px; font-weight: 900; line-height: 1.05; text-transform: uppercase; }
+  #s6 .url { margin-top: 60px; font-size: 40px; font-weight: 600;
+    border: 3px solid #fff; padding: 22px 56px; }
+  #s6 .disc { position: absolute; bottom: 56px; left: 80px; right: 80px;
+    font-size: 22px; color: #444; text-align: center; line-height: 1.6; }
+
+  .progress { position: fixed; bottom: 0; left: 0; height: 6px;
+    background: #e53e3e; width: 0%; transition: width linear; z-index: 100; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <div class="scene" id="s1">
+    <div class="phone-mockup">
+      <div class="notch"></div>
+      <div class="call-info">
+        <div class="caller">Incoming call</div>
+        <div class="calling">Med Spa</div>
+        <div class="status">⬤ RINGING...</div>
+        <div class="missed">No answer.</div>
+      </div>
+    </div>
+    <div class="caption">That was a new patient.</div>
+    <div class="sub">Now they've moved on.</div>
+  </div>
+
+  <div class="scene" id="s2">
+    <div class="time">7 PM.</div>
+    <div class="label">Call comes in after hours.</div>
+    <div class="outcome">Lead gone.</div>
+  </div>
+
+  <div class="scene" id="s3">
+    <div class="intro">This happens everywhere, every day.</div>
+    <div class="prob-item" id="p1"><span class="icon">📵</span><div><div class="text">Missed calls</div><div class="cost">→ lost revenue</div></div></div>
+    <div class="prob-item" id="p2"><span class="icon">🐢</span><div><div class="text">Slow follow-up</div><div class="cost">→ cold leads</div></div></div>
+    <div class="prob-item" id="p3"><span class="icon">📅</span><div><div class="text">Booking friction</div><div class="cost">→ no-shows</div></div></div>
+    <div class="prob-item" id="p4"><span class="icon">⭐</span><div><div class="text">No review asks</div><div class="cost">→ invisible online</div></div></div>
+  </div>
+
+  <div class="scene" id="s4">
+    <div class="intro">Across every local service industry:</div>
+    <div class="industries">
+      <div class="ind-tag" id="i1">Med Spa</div>
+      <div class="ind-tag" id="i2">Dental</div>
+      <div class="ind-tag" id="i3">HVAC</div>
+      <div class="ind-tag" id="i4">Roofing</div>
+      <div class="ind-tag" id="i5">Chiro</div>
+      <div class="ind-tag" id="i6">Real Estate</div>
+      <div class="ind-tag" id="i7">Fitness</div>
+      <div class="ind-tag" id="i8">Plumbing</div>
+      <div class="ind-tag" id="i9">Legal</div>
+    </div>
+  </div>
+
+  <div class="scene" id="s5">
+    <div class="hed">LixenAI automates the fix:</div>
+    <div class="fix-row"><span class="from">Missed call</span><span class="arr">→</span><span class="to">Auto follow-up text</span></div>
+    <div class="fix-row"><span class="from">Cold lead</span><span class="arr">→</span><span class="to">Booking link sent</span></div>
+    <div class="fix-row"><span class="from">No show</span><span class="arr">→</span><span class="to">Reminder fired</span></div>
+    <div class="fix-row"><span class="from">Quiet client</span><span class="arr">→</span><span class="to">Review requested</span></div>
+  </div>
+
+  <div class="scene" id="s6">
+    <div class="logo">LixenAI</div>
+    <div class="cta">Watch the<br>free overview<br>and apply.</div>
+    <div class="url">lixenai.com/partners</div>
+    <div class="disc">Sales Partners Program · Automation outcomes vary by business context and usage.</div>
+  </div>
+
+</div>
+<div class="progress" id="progress"></div>
+<script>
+  const TOTAL = 38000;
+  const schedule = [
+    { id:'s1', start:0,     end:5000 },
+    { id:'s2', start:5000,  end:8500 },
+    { id:'s3', start:8500,  end:16000, onEnter: enterS3 },
+    { id:'s4', start:16000, end:23000, onEnter: enterS4 },
+    { id:'s5', start:23000, end:31000 },
+    { id:'s6', start:31000, end:38000 },
+  ];
+  function enterS3() {
+    [['p1',0],['p2',800],['p3',1600],['p4',2400]].forEach(([id,d]) =>
+      setTimeout(() => document.getElementById(id).classList.add('show'), d));
+  }
+  function enterS4() {
+    [['i1',0],['i2',300],['i3',600],['i4',900],['i5',1200],['i6',1500],['i7',1800],['i8',2100],['i9',2400]].forEach(([id,d]) =>
+      setTimeout(() => document.getElementById(id).classList.add('show'), d));
+  }
+  let startTime=null, active=null, raf=null;
+  function tick(ts) {
+    if (!startTime) startTime=ts;
+    const t = ts-startTime;
+    document.getElementById('progress').style.width = Math.min(t/TOTAL*100,100)+'%';
+    for (const s of schedule) {
+      const el = document.getElementById(s.id);
+      if (t >= s.start && t < s.end && active !== s.id) {
+        if (active) document.getElementById(active).classList.remove('active');
+        el.classList.add('active'); active=s.id;
+        if (s.onEnter) s.onEnter();
+      }
+    }
+    if (t < TOTAL) raf=requestAnimationFrame(tick);
+  }
+  function start() {
+    if(raf) cancelAnimationFrame(raf); raf=null; startTime=null; active=null;
+    ['p1','p2','p3','p4','i1','i2','i3','i4','i5','i6','i7','i8','i9'].forEach(id =>
+      document.getElementById(id).classList.remove('show'));
+    schedule.forEach(s => document.getElementById(s.id).classList.remove('active'));
+    document.getElementById('progress').style.width='0%';
+    raf=requestAnimationFrame(tick);
+  }
+  window.addEventListener('load', () => setTimeout(start, 800));
+  document.getElementById('stage').addEventListener('click', start);
+  function scaleStage() {
+    const s = Math.min(window.innerWidth/1080, window.innerHeight/1920);
+    const st = document.querySelector('.stage');
+    st.style.transform=`scale(${s})`; st.style.transformOrigin='top left';
+    document.body.style.cssText='width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;';
+  }
+  window.addEventListener('resize', scaleStage); scaleStage();
+</script>
+</body>
+</html>
